@@ -1,0 +1,12 @@
+#ifndef _CONST_H_
+#define _CONST_H_
+
+#define REQUEST_COM_PREFIX (0x1A)
+#define RESPONSE_COM_PREFIX (0x5B)
+
+#define HAL_MAX_DELAY (10000U)
+#define HAL_SPI_MAX_DELAY (10000U)
+
+#define POST_COMMAND_DELAY (30U)
+
+#endif
