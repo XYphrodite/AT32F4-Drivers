@@ -5,7 +5,10 @@
 #include <stdbool.h>
 #include "uartDrv.h"
 #include "CRC.h"
+#if (END_DEVICE_TEMPERATURE_SENSOR) || (LITE_GATEWAY)
 #include "lora_spi.h"
+#endif
+
 #if (END_DEVICE_TEMPERATURE_SENSOR) && (!BOOTLOADER)
 #include "nst118_hal.h"
 #endif
@@ -16,18 +19,19 @@ extern "C"
 {
 #endif
 
-#define RST_UNITS_NUM (5U)
+#define RST_UNITS_NUM (10U)
 
 #define MAX_ERR (1U)
 
     typedef enum
     {
+        NONE_UNIT = 0x0,
         SPI_LORA_UNIT = 0x1,  // Lora
         SPI_ACCEL_UNIT = 0x2, // accelerometer
         LORA_UNIT = 0x3,
         UART_UNIT = 0x4,
         MCU_UNIT = 0x5,
-        I2C1_UNIT = 0x6
+        I2C1_UNIT = 0x6,
     } UNIT_NAME;
 
     typedef struct UnitRST

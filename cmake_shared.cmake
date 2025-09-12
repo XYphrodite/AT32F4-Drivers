@@ -25,7 +25,7 @@ message(STATUS "Received ${MCU_TYPE}")
 
 message(STATUS "Shared path: ${SHARED_LIB_PATH}")
 message(STATUS "cmake_shared.cmake included successfully")
-message(STATUS "Include Paths: ${include_c_DIRS}")
+message(STATUS "Include Paths: ${include_c_DIRS}") 
 
 
 # message(STATUS "Include Paths: ${include_c_DIRS}")

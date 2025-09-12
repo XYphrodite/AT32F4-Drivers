@@ -22,18 +22,22 @@ UnitRST_t rst_units[RST_UNITS_NUM];
 
 void init_rst_units(void) {
     memset(rst_units, 0, RST_UNITS_NUM * sizeof(UnitRST_t));
+    #if (END_DEVICE_TEMPERATURE_SENSOR) || (LITE_GATEWAY)
     //SPI_UINT
     rst_units[0].name = SPI_LORA_UNIT;
     rst_units[0].init_func = spi_lora_init;
     rst_units[0].maxErr = MAX_ERR;
+    #endif
     //SPI2_UNIT
     rst_units[1].name = SPI_ACCEL_UNIT;
     rst_units[1].init_func = NULL; //TODO
     rst_units[1].maxErr = MAX_ERR;
+    #if (END_DEVICE_TEMPERATURE_SENSOR) || (LITE_GATEWAY)
     //LORA_UNIT
     rst_units[2].name = LORA_UNIT;
     rst_units[2].init_func = lora_reset;
     rst_units[2].maxErr = MAX_ERR;
+    #endif
     //UART_UNIT
     rst_units[3].name = UART_UNIT;
     rst_units[3].init_func = drv_uart_init;
