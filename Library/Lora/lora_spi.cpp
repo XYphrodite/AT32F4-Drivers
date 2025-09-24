@@ -117,7 +117,11 @@ void lora_pins_init(void)
 
 void lora_reset(void)
 {
+#ifdef USE_LLCC68
+    llcc68_hal_reset(&lm_cfg);
+#else
     sx126x_hal_reset(&lm_cfg);
+#endif
 }
 
 void set_LoraModule_Cfg(void)

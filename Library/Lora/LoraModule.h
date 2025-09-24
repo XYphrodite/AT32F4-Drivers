@@ -4,12 +4,16 @@
 #include "at32f403a_407.h"
 #include "at32f403a_407_wk_config.h"
 #include "gpio.h"
+
+#ifdef USE_LLCC68
+#include "llcc68.h"
+#include "llcc68_hal.h"
+#include "llcc68_regs.h"
+#else
 #include "sx126x.h"
 #include "sx126x_hal.h"
 #include "sx126x_regs.h"
-#include "llcc68_hal.h"
-#include "llcc68.h"
-#include "llcc68_regs.h"
+#endif
 #include "string.h"
 #include "LoraIRQ.h"
 #include "ModemTmr.h"
@@ -22,8 +26,9 @@
 #endif
 #ifdef LITE_GATEWAY
 #include "GatewayConfig.h"
-#include "BootloadConfig.h"
+
 #endif
+#include "BootloadConfig.h"
 #include "PinDefines.h"
 #include "Enums.h"
 

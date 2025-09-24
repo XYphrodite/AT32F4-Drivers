@@ -1,5 +1,108 @@
 #include "LoraModule.h"
 
+// Conditional type and function definitions based on USE_LLCC68
+#ifdef USE_LLCC68
+#define RADIO_STATUS_T llcc68_status_t
+#define RADIO_STATUS_OK LLCC68_STATUS_OK
+#define RADIO_HAL_STATUS_OK LLCC68_HAL_STATUS_OK
+#define RADIO_RESET llcc68_reset
+#define RADIO_WAKEUP llcc68_wakeup
+#define RADIO_READ_REGISTER llcc68_read_register
+#define RADIO_WRITE_REGISTER llcc68_write_register
+#define RADIO_WRITE_BUFFER llcc68_write_buffer
+#define RADIO_READ_BUFFER llcc68_read_buffer
+#define RADIO_SET_DIO_IRQ_PARAMS llcc68_set_dio_irq_params
+#define RADIO_CLEAR_IRQ_STATUS llcc68_clear_irq_status
+#define RADIO_GET_LORA_PKT_STATUS llcc68_get_lora_pkt_status
+#define RADIO_GET_RX_BUFFER_STATUS llcc68_get_rx_buffer_status
+#define RADIO_SET_LORA_PKT_PARAMS llcc68_set_lora_pkt_params
+#define RADIO_SET_TX llcc68_set_tx
+#define RADIO_SET_RX_WITH_TIMEOUT_IN_RTC_STEP llcc68_set_rx_with_timeout_in_rtc_step
+#define RADIO_SET_STANDBY llcc68_set_standby
+#define RADIO_SET_REG_MODE llcc68_set_reg_mode
+#define RADIO_SET_SLEEP llcc68_set_sleep
+#define RADIO_SET_LORA_SYNC_WORD llcc68_set_lora_sync_word
+#define RADIO_SET_LORA_MOD_PARAMS llcc68_set_lora_mod_params
+#define RADIO_SET_RF_FREQ llcc68_set_rf_freq
+#define RADIO_GET_STATUS llcc68_get_status
+#define RADIO_SET_DIO2_AS_RF_SW_CTRL llcc68_set_dio2_as_rf_sw_ctrl
+#define RADIO_SET_PKT_TYPE llcc68_set_pkt_type
+#define RADIO_STOP_TIMER_ON_PREAMBLE llcc68_stop_timer_on_preamble
+#define RADIO_SET_PA_CFG llcc68_set_pa_cfg
+#define RADIO_SET_OCP_VALUE llcc68_set_ocp_value
+#define RADIO_SET_TX_PARAMS llcc68_set_tx_params
+#define RADIO_SET_LORA_SYMB_NB_TIMEOUT llcc68_set_lora_symb_nb_timeout
+#define RADIO_HAL_WAKEUP llcc68_hal_wakeup
+#define RADIO_SET_LORA_SYNC_WORD llcc68_set_lora_sync_word
+
+// Types
+#define RADIO_STANDBY_CFG_T llcc68_standby_cfg_t
+#define RADIO_STANDBY_CFG_RC LLCC68_STANDBY_CFG_RC
+#define RADIO_REG_MOD_T llcc68_reg_mod_t
+#define RADIO_REG_MODE_DCDC LLCC68_REG_MODE_DCDC
+#define RADIO_SLEEP_CFG_COLD_START LLCC68_SLEEP_CFG_COLD_START
+#define RADIO_PKT_TYPE_LORA LLCC68_PKT_TYPE_LORA
+#define RADIO_IRQ_RX_DONE LLCC68_IRQ_RX_DONE
+#define RADIO_RAMP_40_US LLCC68_RAMP_40_US
+#define RADIO_RX_CONTINUOUS LLCC68_RX_CONTINUOUS
+#define RADIO_CHIP_STATUS_T llcc68_chip_status_t
+#define RADIO_RX_BUFFER_STATUS_T llcc68_rx_buffer_status_t
+#define RADIO_PKT_STATUS_LORA_T llcc68_pkt_status_lora_t
+#define RADIO_MOD_PARAMS_LORA_T llcc68_mod_params_lora_t
+#define RADIO_PKT_PARAMS_LORA_T llcc68_pkt_params_lora_t
+#define RADIO_PA_CFG_PARAMS_T llcc68_pa_cfg_params_t
+
+#else
+#define RADIO_STATUS_T sx126x_status_t
+#define RADIO_STATUS_OK SX126X_STATUS_OK
+#define RADIO_HAL_STATUS_OK SX126X_HAL_STATUS_OK
+#define RADIO_RESET sx126x_reset
+#define RADIO_WAKEUP sx126x_wakeup
+#define RADIO_READ_REGISTER sx126x_read_register
+#define RADIO_WRITE_REGISTER sx126x_write_register
+#define RADIO_WRITE_BUFFER sx126x_write_buffer
+#define RADIO_READ_BUFFER sx126x_read_buffer
+#define RADIO_SET_DIO_IRQ_PARAMS sx126x_set_dio_irq_params
+#define RADIO_CLEAR_IRQ_STATUS sx126x_clear_irq_status
+#define RADIO_GET_LORA_PKT_STATUS sx126x_get_lora_pkt_status
+#define RADIO_GET_RX_BUFFER_STATUS sx126x_get_rx_buffer_status
+#define RADIO_SET_LORA_PKT_PARAMS sx126x_set_lora_pkt_params
+#define RADIO_SET_TX sx126x_set_tx
+#define RADIO_SET_RX_WITH_TIMEOUT_IN_RTC_STEP sx126x_set_rx_with_timeout_in_rtc_step
+#define RADIO_SET_STANDBY sx126x_set_standby
+#define RADIO_SET_REG_MODE sx126x_set_reg_mode
+#define RADIO_SET_SLEEP sx126x_set_sleep
+#define RADIO_SET_LORA_SYNC_WORD sx126x_set_lora_sync_word
+#define RADIO_SET_LORA_MOD_PARAMS sx126x_set_lora_mod_params
+#define RADIO_SET_RF_FREQ sx126x_set_rf_freq
+#define RADIO_GET_STATUS sx126x_get_status
+#define RADIO_SET_DIO2_AS_RF_SW_CTRL sx126x_set_dio2_as_rf_sw_ctrl
+#define RADIO_SET_PKT_TYPE sx126x_set_pkt_type
+#define RADIO_STOP_TIMER_ON_PREAMBLE sx126x_stop_timer_on_preamble
+#define RADIO_SET_PA_CFG sx126x_set_pa_cfg
+#define RADIO_SET_OCP_VALUE sx126x_set_ocp_value
+#define RADIO_SET_TX_PARAMS sx126x_set_tx_params
+#define RADIO_SET_LORA_SYMB_NB_TIMEOUT sx126x_set_lora_symb_nb_timeout
+#define RADIO_HAL_WAKEUP sx126x_hal_wakeup
+
+// Types
+#define RADIO_STANDBY_CFG_T sx126x_standby_cfg_t
+#define RADIO_STANDBY_CFG_RC SX126X_STANDBY_CFG_RC
+#define RADIO_REG_MOD_T sx126x_reg_mod_t
+#define RADIO_REG_MODE_DCDC SX126X_REG_MODE_DCDC
+#define RADIO_SLEEP_CFG_COLD_START SX126X_SLEEP_CFG_COLD_START
+#define RADIO_PKT_TYPE_LORA SX126X_PKT_TYPE_LORA
+#define RADIO_IRQ_RX_DONE SX126X_IRQ_RX_DONE
+#define RADIO_RAMP_40_US SX126X_RAMP_40_US
+#define RADIO_RX_CONTINUOUS SX126X_RX_CONTINUOUS
+#define RADIO_CHIP_STATUS_T sx126x_chip_status_t
+#define RADIO_RX_BUFFER_STATUS_T sx126x_rx_buffer_status_t
+#define RADIO_PKT_STATUS_LORA_T sx126x_pkt_status_lora_t
+#define RADIO_MOD_PARAMS_LORA_T sx126x_mod_params_lora_t
+#define RADIO_PKT_PARAMS_LORA_T sx126x_pkt_params_lora_t
+#define RADIO_PA_CFG_PARAMS_T sx126x_pa_cfg_params_t
+#endif
+
 LoraModule_Cfg lm_cfg;
 LbsFlags lbs_flags;
 
@@ -200,7 +303,7 @@ bool LoraModule::Config(uint32_t freq)
 #endif
 
     uint8_t ocp = 12;
-    sx126x_set_ocp_value(lora_spi, ocp);
+    RADIO_SET_OCP_VALUE(lora_spi, ocp);
 // Set TX Params
 // See datasheet 13.4.4 for details
 #ifdef END_DEVICE_TEMPERATURE_SENSOR
@@ -282,8 +385,8 @@ bool LoraModule::IsWorking(void)
 
 bool LoraModule::SetPublic(void)
 {
-    sx126x_status_t status = sx126x_set_lora_sync_word(&lora_spi, 0x34);
-    if (status == SX126X_STATUS_OK)
+    RADIO_STATUS_T status = RADIO_SET_LORA_SYNC_WORD(&lora_spi, 0x34);
+    if (status == RADIO_STATUS_OK)
         return true;
     return false;
 }
@@ -526,20 +629,11 @@ bool LoraModule::SetModeStandby(void)
 {
 // Tell the chip to wait for it to receive a packet.
 // Based on our previous config, this should throw an interrupt when we get a packet
-#ifdef USE_LLCC68
-    llcc68_standby_cfg_t cfg;
-#else
-    sx126x_standby_cfg_t cfg;
-#endif
-    // cfg = SX126X_STANDBY_CFG_XOSC;
-    cfg = SX126X_STANDBY_CFG_RC;
-#ifdef USE_LLCC68
-    if (llcc68_set_standby(&lora_spi, cfg) != (llcc68_status_t)LLCC68_STATUS_OK)
+    RADIO_STANDBY_CFG_T cfg;
+    // cfg = RADIO_STANDBY_CFG_XOSC;
+    cfg = RADIO_STANDBY_CFG_RC;
+    if (RADIO_SET_STANDBY(&lora_spi, cfg) != RADIO_STATUS_OK)
         return false;
-#else
-    if (sx126x_set_standby(&lora_spi, cfg) != (sx126x_status_t)SX126X_HAL_STATUS_OK)
-        return false;
-#endif
 
     WaitForRadioCommandCompletion(100);
 
@@ -558,8 +652,8 @@ bool LoraModule::SetModeStandby(void)
 
 bool LoraModule::SetDCDC(void)
 {
-    sx126x_reg_mod_t mode = SX126X_REG_MODE_DCDC;
-    if (sx126x_set_reg_mode(&lora_spi, mode) != (sx126x_status_t)SX126X_HAL_STATUS_OK)
+    RADIO_REG_MOD_T mode = RADIO_REG_MODE_DCDC;
+    if (RADIO_SET_REG_MODE(&lora_spi, mode) != RADIO_STATUS_OK)
         return false;
     return true;
 }

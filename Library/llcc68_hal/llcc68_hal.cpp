@@ -25,7 +25,7 @@ llcc68_hal_status_t llcc68_hal_write(const void *context, const uint8_t *command
 
     if (gpio_input_data_bit_read(cfg->busy_type, cfg->busy_pin) == SET)
     {
-        sx126x_hal_wakeup(context);
+        llcc68_hal_wakeup(context);
     }
     lora_spi->set_cs(RESET); // Pull NSS low to start communication
     for (uint16_t i = 0; i < command_length; i++)
@@ -71,7 +71,7 @@ llcc68_hal_status_t llcc68_hal_read(const void *context, const uint8_t *command,
     uint32_t count = 0;
     if (gpio_input_data_bit_read(cfg->busy_type, cfg->busy_pin) == SET)
     {
-        sx126x_hal_wakeup(context);
+        llcc68_hal_wakeup(context);
     }
 
     lora_spi->set_cs(RESET); // Pull NSS low to start communication

@@ -75,9 +75,7 @@ private:
     static uint32_t fuota_app_length;
 #endif
     static bootloader_flags_t bootloader_flags;
-#ifdef LITE_GATEWAY
     static LbsFlags lbs_flags;
-#endif
 
     static uint8_t crc;
 
@@ -139,10 +137,8 @@ public:
     static bootloader_flags_t GetBootloaderFlags(void);
     static void SetBootloaderFlags(bootloader_flags_t new_flags);
 
-#ifdef LITE_GATEWAY
     static void SetLbsFlags(LbsFlags new_flags);
     static LbsFlags GetLbsFlags(void);
-#endif
 
     static bool RestoreFirmware(other_firmware fw);
     static bool CheckFirmwareExistence(uint32_t addr, uint32_t length);

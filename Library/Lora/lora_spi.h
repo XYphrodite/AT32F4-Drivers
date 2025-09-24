@@ -5,7 +5,13 @@
 #include "gpio.h"
 #include "LoraIRQ.h"
 #include "LoraStructs.h"
+
+#ifdef USE_LLCC68
+#include "llcc68_hal.h"
+#else
 #include "sx126x_hal.h"
+#endif
+
 #include "unitControl.h"
 #include "Enums.h"
 #include "mcu_hal.h"

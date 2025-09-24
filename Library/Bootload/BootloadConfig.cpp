@@ -22,9 +22,7 @@ uint32_t BootloadConfig::fuota_app_length;
 
 bootloader_flags_t BootloadConfig::bootloader_flags;
 
-#ifdef LITE_GATEWAY
 LbsFlags BootloadConfig::lbs_flags;
-#endif
 
 uint8_t BootloadConfig::crc;
 
@@ -269,7 +267,7 @@ void BootloadConfig::SetBootloaderFlags(bootloader_flags_t new_flags)
     }
 }
 
-#ifdef LITE_GATEWAY
+
 void BootloadConfig::SetLbsFlags(LbsFlags new_flags)
 {
     if (memcmp(&lbs_flags, &new_flags, sizeof(lbs_flags)) != 0)
@@ -282,7 +280,6 @@ LbsFlags BootloadConfig::GetLbsFlags(void)
 {
     return isOkay ? lbs_flags : DEFAULT_LBS_FLAGS;
 }
-#endif
 
 void BootloadConfig::SetCrcAndSave(void)
 {

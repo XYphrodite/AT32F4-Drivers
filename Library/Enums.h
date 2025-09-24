@@ -29,16 +29,12 @@ enum device_type : uint16_t
     pigstore_pblock = 0x3U
 };
 
-#ifdef LITE_GATEWAY
-
 enum LbsFlags : uint32_t
 {
     lbs_unknown_board = 0x1U << 0U, // 1
-    lbs_old_board = 0x1U << 1U, // 2
-    lbs_new_board = 0x1U << 2U  // 4
+    lbs_old_board = 0x1U << 1U,     // 2
+    lbs_new_board = 0x1U << 2U      // 4
 };
-
-#endif
 
 #pragma pack(pop)
 
