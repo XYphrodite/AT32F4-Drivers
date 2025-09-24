@@ -26,7 +26,6 @@
 #endif
 #ifdef LITE_GATEWAY
 #include "GatewayConfig.h"
-
 #endif
 #include "BootloadConfig.h"
 #include "PinDefines.h"

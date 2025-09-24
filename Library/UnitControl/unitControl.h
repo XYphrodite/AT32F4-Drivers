@@ -3,7 +3,7 @@
 
 #include "at32f403a_407.h"
 #include <stdbool.h>
-#include "uartDrv.h"
+#include "UartDrv.h"
 #include "CRC.h"
 #if (END_DEVICE_TEMPERATURE_SENSOR) || (LITE_GATEWAY)
 #include "lora_spi.h"
