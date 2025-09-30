@@ -33,6 +33,21 @@ extern "C" {
 #define RX_RING_BUF_SIZE (512U)
 
 
+/* Define USART init structure if not provided by vendor headers */
+#ifndef __USART_INIT_TYPE_DEFINED
+#define __USART_INIT_TYPE_DEFINED
+    typedef struct
+    {
+        uint32_t baudrate;
+        uint32_t data_bit;
+        uint32_t stop_bit;
+        uint32_t parity;
+        uint32_t mode;
+        uint32_t hardware_flow_control;
+    } usart_init_type;
+#endif
+
+
 /// @brief инициализация периферии МК
     void drv_uart_init(void);
 
