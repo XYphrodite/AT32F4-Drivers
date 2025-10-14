@@ -40,6 +40,12 @@ typedef enum {
   USART_MODE_TX_RX = 0x03
 } usart_mode_type;
 
+/* UART reception mode enumeration */
+typedef enum {
+  UART_RX_MODE_DMA = 0x00,      /*!< Use DMA for reception (polling-based) */
+  UART_RX_MODE_INTERRUPT = 0x01 /*!< Use interrupts for reception (event-driven) */
+} uart_rx_mode_type;
+
 /* Define USART init structure if not provided by vendor headers */
 #ifndef __USART_INIT_TYPE_DEFINED
 #define __USART_INIT_TYPE_DEFINED
@@ -51,6 +57,17 @@ typedef struct {
   usart_parity_selection_type parity;
   usart_mode_type mode;
   usart_hardware_flow_control_type hardware_flow_control;
+  uart_rx_mode_type rx_mode;              // DMA or Interrupt mode for RX
+  gpio_type* tx_gpio_port;                // GPIO port for TX pin
+  uint16_t tx_gpio_pin;                   // GPIO pin for TX
+  gpio_type* rx_gpio_port;                // GPIO port for RX pin
+  uint16_t rx_gpio_pin;                   // GPIO pin for RX
+  crm_periph_clock_type tx_gpio_clk;      // Clock for TX GPIO
+  crm_periph_clock_type rx_gpio_clk;      // Clock for RX GPIO
+  crm_periph_clock_type usart_clk;        // Clock for USART peripheral
+  IRQn_Type usart_irq;                    // IRQ number for USART
+  uint8_t irq_priority;                   // IRQ priority
+  uint8_t irq_subpriority;                // IRQ sub-priority
 } usart_init_type;
 #endif
 
