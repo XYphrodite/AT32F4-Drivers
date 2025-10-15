@@ -71,9 +71,7 @@ typedef struct {
 } usart_init_type;
 #endif
 
-/// @brief инициализация периферии МК (без параметров — использует значения по
-/// умолчанию)
-// void drv_uart_init(void);
+
 /// @brief инициализация периферии МК с параметрами
 void drv_uart_init(const usart_init_type *init);
 void drv_uart_init_adapter(void *cfg);

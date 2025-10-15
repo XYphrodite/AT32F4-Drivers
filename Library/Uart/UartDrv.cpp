@@ -25,6 +25,27 @@ void drv_uart_init(const usart_init_type* init)
     usart_parity_selection_type parity = init->parity;
     usart_hardware_flow_control_type flow = init->hardware_flow_control;
     uart_rx_mode_type rx_mode = init->rx_mode;
+
+    /* Disable DMA if switching to INTERRUPT mode - determine DMA channel by USART */
+    // if (rx_mode == UART_RX_MODE_INTERRUPT)
+    // {
+    //     if (us == USART1)
+    //     {
+    //         dma_channel_enable(DMA1_CHANNEL1, FALSE);
+    //         dma_reset(DMA1_CHANNEL1);
+    //     }
+    //     else if (us == USART2)
+    //     {
+    //         dma_channel_enable(DMA1_CHANNEL6, FALSE);
+    //         dma_reset(DMA1_CHANNEL6);
+    //     }
+    //     else if (us == USART3)
+    //     {
+    //         dma_channel_enable(DMA1_CHANNEL3, FALSE);
+    //         dma_reset(DMA1_CHANNEL3);
+    //     }
+    //     /* Add other USARTs as needed */
+    // }
     
     /* GPIO configuration with defaults */
     gpio_type* tx_port = (init->tx_gpio_port != NULL) ? init->tx_gpio_port : DEBUG_USART_TX_GPIO_PORT;
@@ -142,30 +163,6 @@ void drv_uart_init_adapter(void* cfg)
     drv_uart_init(init);
 }
 
-// void drv_uart_init(void)
-// {
-//     usart_init_type def = {
-//         .usart = USART1,
-//         .baudrate = USART1_BAUD_RATE,
-//         .data_bit = USART_DATA_8BITS,
-//         .stop_bit = USART_STOP_1_BIT,
-//         .parity = USART_PARITY_NONE,
-//         .mode = USART_MODE_TX_RX,
-//         .hardware_flow_control = USART_HARDWARE_FLOW_NONE,
-//         .rx_mode = UART_RX_MODE_DMA,  // Default to DMA mode
-//         .tx_gpio_port = DEBUG_USART_TX_GPIO_PORT,
-//         .tx_gpio_pin = DEBUG_USART_TX_PIN,
-//         .rx_gpio_port = DEBUG_USART_RX_GPIO_PORT,
-//         .rx_gpio_pin = DEBUG_USART_RX_PIN,
-//         .tx_gpio_clk = CRM_GPIOA_PERIPH_CLOCK,
-//         .rx_gpio_clk = CRM_GPIOA_PERIPH_CLOCK,
-//         .usart_clk = CRM_USART1_PERIPH_CLOCK,
-//         .usart_irq = (IRQn_Type)0,  // Not used in DMA mode
-//         .irq_priority = 0,
-//         .irq_subpriority = 0
-//     };
-//     drv_uart_init(&def);
-// }
 
 void drv_uart_transmit(uint8_t* pTxBuf, uint16_t cnt) {
     // если указатель на передаваемые данные нулевой или число передаваемых байт равно нулю - вхыодим
