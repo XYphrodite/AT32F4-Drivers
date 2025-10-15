@@ -45,8 +45,8 @@ void drv_timer_init(const timer_init_type* init)
     /* Reset counter to 0 */
     tmr_counter_value_set(timer, 0);
 
-    /* Configure NVIC for timer interrupt */
-    if (init->timer_irq != (IRQn_Type)0)
+    /* Configure NVIC for timer interrupt if requested */
+    if (init->enable_irq == TRUE)
     {
         nvic_irq_enable(init->timer_irq, init->irq_priority, init->irq_subpriority);
     }
@@ -175,19 +175,4 @@ confirm_state drv_timer_get_flag(tmr_type* timer, timer_interrupt_type int_type)
 
     return FALSE;
 }
-
-/* Legacy function - kept for backward compatibility */
-void tmr_apply_base_init(tmr_type* tmr_x, const tmr_base_init_type* init)
-{
-    if (tmr_x == NULL || init == NULL)
-    {
-        return;
-    }
-
-    tmr_base_init(tmr_x, init->period, init->div);
-    tmr_cnt_dir_set(tmr_x, (tmr_count_mode_type)init->count_mode);
-    tmr_clock_source_div_set(tmr_x, (tmr_clock_division_type)init->clock_division);
-    tmr_repetition_counter_set(tmr_x, (uint8_t)init->repetition_counter);
-}
-
 

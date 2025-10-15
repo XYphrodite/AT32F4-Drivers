@@ -45,9 +45,10 @@ typedef struct
     uint8_t repetition_counter;             /*!< Repetition counter (for advanced timers) */
     
     /* IRQ configuration */
-    IRQn_Type timer_irq;                    /*!< IRQ number for timer */
-    uint8_t irq_priority;                   /*!< IRQ priority (0-15) */
-    uint8_t irq_subpriority;                /*!< IRQ sub-priority */
+    confirm_state enable_irq;               /*!< TRUE to enable NVIC interrupts, FALSE to disable */
+    IRQn_Type timer_irq;                    /*!< IRQ number for timer (required if enable_irq is TRUE) */
+    uint8_t irq_priority;                   /*!< IRQ priority (0-15, used if enable_irq is TRUE) */
+    uint8_t irq_subpriority;                /*!< IRQ sub-priority (used if enable_irq is TRUE) */
     
     /* Clock enable */
     crm_periph_clock_type timer_clk;        /*!< Timer peripheral clock */
@@ -89,9 +90,6 @@ void drv_timer_clear_flag(tmr_type* timer, timer_interrupt_type int_type);
 /// @param int_type Interrupt type to check (typically single flag, not combined)
 /// @return TRUE if flag is set, FALSE otherwise
 confirm_state drv_timer_get_flag(tmr_type* timer, timer_interrupt_type int_type);
-
-/* Legacy function - Initialize timer using tmr_base_init_type */
-void tmr_apply_base_init(tmr_type* tmr_x, const tmr_base_init_type* init);
 
 #ifdef __cplusplus
 }
