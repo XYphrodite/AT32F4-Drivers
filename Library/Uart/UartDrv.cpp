@@ -10,7 +10,7 @@
 UartDrv_t uartDrv;
 
 
-void drv_uart_init_ex(const usart_init_type* init)
+void drv_uart_init(const usart_init_type* init)
 {
     if (init == NULL)
     {
@@ -136,30 +136,36 @@ void drv_uart_init_ex(const usart_init_type* init)
     usart_data_receive(us);
 }
 
-void drv_uart_init(void)
+void drv_uart_init_adapter(void* cfg)
 {
-    usart_init_type def = {
-        .usart = USART1,
-        .baudrate = USART1_BAUD_RATE,
-        .data_bit = USART_DATA_8BITS,
-        .stop_bit = USART_STOP_1_BIT,
-        .parity = USART_PARITY_NONE,
-        .mode = USART_MODE_TX_RX,
-        .hardware_flow_control = USART_HARDWARE_FLOW_NONE,
-        .rx_mode = UART_RX_MODE_DMA,  // Default to DMA mode
-        .tx_gpio_port = DEBUG_USART_TX_GPIO_PORT,
-        .tx_gpio_pin = DEBUG_USART_TX_PIN,
-        .rx_gpio_port = DEBUG_USART_RX_GPIO_PORT,
-        .rx_gpio_pin = DEBUG_USART_RX_PIN,
-        .tx_gpio_clk = CRM_GPIOA_PERIPH_CLOCK,
-        .rx_gpio_clk = CRM_GPIOA_PERIPH_CLOCK,
-        .usart_clk = CRM_USART1_PERIPH_CLOCK,
-        .usart_irq = (IRQn_Type)0,  // Not used in DMA mode
-        .irq_priority = 0,
-        .irq_subpriority = 0
-    };
-    drv_uart_init_ex(&def);
+    const usart_init_type* init = (const usart_init_type*)cfg;
+    drv_uart_init(init);
 }
+
+// void drv_uart_init(void)
+// {
+//     usart_init_type def = {
+//         .usart = USART1,
+//         .baudrate = USART1_BAUD_RATE,
+//         .data_bit = USART_DATA_8BITS,
+//         .stop_bit = USART_STOP_1_BIT,
+//         .parity = USART_PARITY_NONE,
+//         .mode = USART_MODE_TX_RX,
+//         .hardware_flow_control = USART_HARDWARE_FLOW_NONE,
+//         .rx_mode = UART_RX_MODE_DMA,  // Default to DMA mode
+//         .tx_gpio_port = DEBUG_USART_TX_GPIO_PORT,
+//         .tx_gpio_pin = DEBUG_USART_TX_PIN,
+//         .rx_gpio_port = DEBUG_USART_RX_GPIO_PORT,
+//         .rx_gpio_pin = DEBUG_USART_RX_PIN,
+//         .tx_gpio_clk = CRM_GPIOA_PERIPH_CLOCK,
+//         .rx_gpio_clk = CRM_GPIOA_PERIPH_CLOCK,
+//         .usart_clk = CRM_USART1_PERIPH_CLOCK,
+//         .usart_irq = (IRQn_Type)0,  // Not used in DMA mode
+//         .irq_priority = 0,
+//         .irq_subpriority = 0
+//     };
+//     drv_uart_init(&def);
+// }
 
 void drv_uart_transmit(uint8_t* pTxBuf, uint16_t cnt) {
     // если указатель на передаваемые данные нулевой или число передаваемых байт равно нулю - вхыодим
@@ -194,12 +200,6 @@ void drv_uart_init_apply(const usart_init_type* init)
     usart_receiver_enable(USART1, TRUE);
     usart_parity_selection_config(USART1, parity);
     usart_hardware_flow_control_set(USART1, flow);
-}
-
-void drv_uart_init_adapter(void* cfg)
-{
-    const usart_init_type* init = (const usart_init_type*)cfg;
-    drv_uart_init_ex(init);
 }
 
 
