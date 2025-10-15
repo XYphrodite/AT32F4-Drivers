@@ -164,22 +164,31 @@ void drv_uart_init_adapter(void* cfg)
 }
 
 
-void drv_uart_transmit(uint8_t* pTxBuf, uint16_t cnt) {
-    // если указатель на передаваемые данные нулевой или число передаваемых байт равно нулю - вхыодим
-    if ((pTxBuf == 0) || (cnt == 0)) {
+void drv_uart_transmit(usart_type* usart, uint8_t* pTxBuf, uint16_t cnt)
+{
+    // Validate parameters
+    if (usart == NULL || pTxBuf == NULL || cnt == 0)
+    {
         return;
     }
+    
     memcpy(uartDrv.txBuf, pTxBuf, cnt);
     uartDrv.txCnt = cnt;
 
     uint32_t count = 0;
-    for (uint8_t i = 0;i < uartDrv.txCnt;i++) {
-        while (usart_flag_get(USART1, USART_TDBE_FLAG) == RESET && count < HAL_MAX_DELAY);
-        if (count >= HAL_MAX_DELAY) {
+    for (uint8_t i = 0; i < uartDrv.txCnt; i++)
+    {
+        count = 0;
+        while (usart_flag_get(usart, USART_TDBE_FLAG) == RESET && count < HAL_MAX_DELAY)
+        {
+            count++;
+        }
+        if (count >= HAL_MAX_DELAY)
+        {
             add_error_to_unit_control(UART_UNIT);
             return;
         }
-        usart_data_transmit(USART1, uartDrv.txBuf[i]);
+        usart_data_transmit(usart, uartDrv.txBuf[i]);
     }
 }
 

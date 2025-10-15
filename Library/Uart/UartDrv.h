@@ -77,15 +77,12 @@ void drv_uart_init(const usart_init_type *init);
 void drv_uart_init_adapter(void *cfg);
 void drv_uart_init_apply(const usart_init_type *init);
 
-/// @brief  Передаёт cnt байт данных из буфера по указателю pTxBuf в шину rs485.
-///         Запускает процесс передачи: переключение линии в передачу, отправку
-///         данных, переключение линии в приём
-/// @param [in] pTxBuf  :: указатель на буфер, данные из которого будут переданы
-/// в шину RS485
+/// @brief  Передаёт cnt байт данных из буфера по указателю pTxBuf через UART
+///         Запускает процесс передачи с защитой от зависания
+/// @param [in] usart   :: UART peripheral (USART1, USART2, etc.)
+/// @param [in] pTxBuf  :: указатель на буфер с данными для передачи
 /// @param [in] cnt     :: кол-во байт, которое необходимо передать
-void drv_uart_transmit(uint8_t *pTxBuf,
-                       uint16_t cnt); // передаёт cnt байт данных data по rs485
-// void drv_uart_transmit_str(const char* pTxBuf, uint16_t cnt);
+void drv_uart_transmit(usart_type* usart, uint8_t *pTxBuf, uint16_t cnt);
 
 uint16_t drv_uart_read();
 
