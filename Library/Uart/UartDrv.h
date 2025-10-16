@@ -82,7 +82,7 @@ void drv_uart_init_apply(const usart_init_type *init);
 /// @param [in] usart   :: UART peripheral (USART1, USART2, etc.)
 /// @param [in] pTxBuf  :: указатель на буфер с данными для передачи
 /// @param [in] cnt     :: кол-во байт, которое необходимо передать
-void drv_uart_transmit(usart_type* usart, uint8_t *pTxBuf, uint16_t cnt);
+void drv_uart_transmit(usart_type* usart, const uint8_t *pTxBuf, uint16_t cnt);
 
 uint16_t drv_uart_read();
 

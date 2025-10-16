@@ -164,7 +164,7 @@ void drv_uart_init_adapter(void* cfg)
 }
 
 
-void drv_uart_transmit(usart_type* usart, uint8_t* pTxBuf, uint16_t cnt)
+void drv_uart_transmit(usart_type* usart, const uint8_t* pTxBuf, uint16_t cnt)
 {
     // Validate parameters
     if (usart == NULL || pTxBuf == NULL || cnt == 0)
@@ -172,23 +172,45 @@ void drv_uart_transmit(usart_type* usart, uint8_t* pTxBuf, uint16_t cnt)
         return;
     }
     
+    // Validate buffer size
+    if (cnt > UART_TXBUF_SIZE)
+    {
+        cnt = UART_TXBUF_SIZE;
+    }
+    
     memcpy(uartDrv.txBuf, pTxBuf, cnt);
     uartDrv.txCnt = cnt;
 
     uint32_t count = 0;
-    for (uint8_t i = 0; i < uartDrv.txCnt; i++)
+    
+    for (uint16_t i = 0; i < uartDrv.txCnt; i++)
     {
+        /* Wait for transmit data buffer empty before writing */
         count = 0;
-        while (usart_flag_get(usart, USART_TDBE_FLAG) == RESET && count < HAL_MAX_DELAY)
+        while (usart_flag_get(usart, USART_TDBE_FLAG) == RESET && count < HAL_UART_MAX_DELAY)
         {
             count++;
         }
-        if (count >= HAL_MAX_DELAY)
+        if (count >= HAL_UART_MAX_DELAY)
         {
             add_error_to_unit_control(UART_UNIT);
             return;
         }
+        
+        /* Write byte to transmit register */
         usart_data_transmit(usart, uartDrv.txBuf[i]);
+        
+        /* Wait for transmission complete before next byte - ensures byte is fully shifted out */
+        count = 0;
+        while (usart_flag_get(usart, USART_TDC_FLAG) == RESET && count < HAL_UART_MAX_DELAY)
+        {
+            count++;
+        }
+        if (count >= HAL_UART_MAX_DELAY)
+        {
+            add_error_to_unit_control(UART_UNIT);
+            return;
+        }
     }
 }
 
