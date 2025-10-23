@@ -18,7 +18,7 @@ private:
 public:
     UartService(/* args */);
     ~UartService();
-    static void Init(void);
+    static void Init(const usart_init_type* init_config);
     bool Send(const uint8_t* buffer, uint16_t len);
     uint16_t Read(void);
     bool TryGetCommand(void);

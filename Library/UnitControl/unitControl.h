@@ -41,7 +41,8 @@ extern "C"
         uint8_t errCnt;
         uint8_t maxErr;
         uint32_t rstCnt;
-        void (*init_func)();
+        void (*init_func)(void*);
+        void* init_arg;
         // uint32_t last_error;
     } UnitRST_t;
 #pragma pack(push, 1)

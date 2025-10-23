@@ -13,16 +13,16 @@ UartService::~UartService()
 {
 }
 
-void UartService::Init(void)
+void UartService::Init(const usart_init_type* init_config)
 {
-    drv_uart_init();
+    drv_uart_init(init_config);
 }
 
 bool UartService::Send(const uint8_t *buffer, uint16_t len)
 {
     uint16_t newLen{0};
     PacketWrapper::Wrap(buffer, len, txbuf, &newLen, rxBuf[1]);
-    drv_uart_transmit(txbuf, newLen);
+    drv_uart_transmit(USART1, txbuf, newLen);  // UartService uses USART1
     return TRUE;
 }
 
