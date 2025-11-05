@@ -32,8 +32,7 @@ error_status SystemApi::InitServices(const SystemServices_t& services) {
         if (services.init_config != nullptr) {
             UartService::Init(services.init_config);
         } else {
-            // Skip UART initialization if no config provided
-            // UART service requires valid configuration to function properly
+            return ERROR;
         }
     }
     if (services.WatchdogTimer) {

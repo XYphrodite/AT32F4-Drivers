@@ -21,9 +21,6 @@ struct SystemServices
     bool BootloaderConfig : 1;
     bool reserved : 26;
     usart_init_type* init_config;
-
-    // Constructor to ensure init_config is initialized
-    SystemServices() : init_config(nullptr) {}
 };
 
 typedef struct SystemServices SystemServices_t;
