@@ -1,5 +1,5 @@
-#ifndef _WATCH_DOG_H_
-#define _WATCH_DOG_H_
+#ifndef _WATCH_DOG_API_H_
+#define _WATCH_DOG_API_H_
 
 #include <stdint.h>
 
@@ -52,5 +52,5 @@ void watchdog_notify_custom(WatchDogSubject_t subject);
 }
 #endif
 
-#endif // _WATCH_DOG_H_
+#endif // _WATCH_DOG_API_H_
 

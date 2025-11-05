@@ -1,4 +1,4 @@
-#include "WatchDog.h"
+#include "WatchDogApi.h"
 
 // Forward declarations from existing implementations
 extern "C"

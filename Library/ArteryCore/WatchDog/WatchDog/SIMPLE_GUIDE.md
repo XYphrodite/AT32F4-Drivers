@@ -13,7 +13,7 @@ watchdog_mark_healthy(WDT_COMPONENT);   // Mark component healthy
 ## Example 1: Simple Usage
 
 ```cpp
-#include "WatchDog.h"
+#include "WatchDogApi.h"
 
 int main(void)
 {
@@ -36,7 +36,7 @@ int main(void)
 ## Example 2: With Health Checking
 
 ```cpp
-#include "WatchDog.h"
+#include "WatchDogApi.h"
 
 void main_loop(void)
 {
@@ -86,7 +86,7 @@ Available components for `watchdog_mark_healthy()`:
 ## Example 3: Custom Configuration (Advanced)
 
 ```cpp
-#include "WatchDog.h"
+#include "WatchDogApi.h"
 
 void advanced_usage(void)
 {
@@ -105,7 +105,7 @@ void advanced_usage(void)
 
 ## Switching Implementations
 
-In `WatchDog.cpp`:
+In `WatchDogApi.cpp`:
 
 ```cpp
 #define USE_HEALTH_CHECK_WDT  // Use health checking
