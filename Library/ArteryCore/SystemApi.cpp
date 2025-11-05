@@ -29,7 +29,12 @@ error_status SystemApi::InitServices(const SystemServices_t& services) {
         init_rst_units();
     }
     if (services.UartService) {
-        UartService::Init(services.init_config);
+        if (services.init_config != nullptr) {
+            UartService::Init(services.init_config);
+        } else {
+            // Skip UART initialization if no config provided
+            // UART service requires valid configuration to function properly
+        }
     }
     if (services.WatchdogTimer) {
         simple_wdt_init();
