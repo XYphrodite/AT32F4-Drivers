@@ -18,28 +18,33 @@ void SystemApi::Init(nvic_priority_group_type priority_group, MCU_speed clock,
   __enable_irq();
 }
 
-error_status SystemApi::InitServices(const SystemServices_t& services) {
-    if (services.UpTimeTmr) {
-        init_UpTime_Tmr();
+error_status SystemApi::InitServices(const SystemServices_t &services) {
+  if (services.UpTimeTmr) {
+    init_UpTime_Tmr();
+  }
+  if (services.FlashService) {
+    FlashService::Init();
+  }
+  if (services.UnitReset) {
+    init_rst_units();
+  }
+  if (services.UartService) {
+    if (services.init_config != nullptr) {
+      UartService::Init(services.init_config);
+    } else {
+      return ERROR;
     }
-    if (services.FlashService) {
-        FlashService::Init();
-    }
-    if (services.UnitReset) {
-        init_rst_units();
-    }
-    if (services.UartService) {
-        if (services.init_config != nullptr) {
-            UartService::Init(services.init_config);
-        } else {
-            return ERROR;
-        }
-    }
-    if (services.WatchdogTimer) {
-        simple_wdt_init();
-    }
-    if (services.BootloaderConfig) {
-        BootloadConfig::Init();
-    }
-    return SUCCESS;
+  }
+  if (services.WatchdogTimer) {
+#ifdef SIMPLE_WD
+    simple_wdt_init();
+#endif
+#ifdef WDT
+    wdt_init();
+#endif
+  }
+  if (services.BootloaderConfig) {
+    BootloadConfig::Init();
+  }
+  return SUCCESS;
 }
