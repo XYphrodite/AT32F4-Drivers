@@ -7,7 +7,7 @@
 #include "FlashService.h"
 #include "unitControl.h"
 #include "UartApi.h"
-#include "SimpleWD.h"
+#include "WatchDog/WatchDog/WatchDog.h"
 #include "BootloadConfig.h"
 
 // System services bitfield - allows selective initialization of MCU services

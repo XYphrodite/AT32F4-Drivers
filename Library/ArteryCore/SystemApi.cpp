@@ -36,12 +36,7 @@ error_status SystemApi::InitServices(const SystemServices_t &services) {
     }
   }
   if (services.WatchdogTimer) {
-#ifdef SIMPLE_WD
-    simple_wdt_init();
-#endif
-#ifdef WDT
-    wdt_init();
-#endif
+    watchdog_init();
   }
   if (services.BootloaderConfig) {
     BootloadConfig::Init();
