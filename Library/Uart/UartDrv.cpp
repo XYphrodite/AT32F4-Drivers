@@ -109,11 +109,27 @@ void drv_uart_init(const usart_init_type* init)
         crm_periph_clock_enable(CRM_DMA1_PERIPH_CLOCK, TRUE);
         
         /* init dma1 channel1 (USART1_RX) */
-        wk_dma1_channel1_init();
-        wk_dma_channel_config(DMA1_CHANNEL1,
-            (uint32_t)&us->dt,
-            (uint32_t)uartDrv.rxDmaBuf,
-            DMA1_CHANNEL1_BUFFER_SIZE);
+        dma_init_type dma_init_struct;
+
+        dma_reset(DMA1_CHANNEL1);
+        dma_default_para_init(&dma_init_struct);
+        dma_init_struct.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
+        dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_BYTE;
+        dma_init_struct.memory_inc_enable = TRUE;
+        dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_BYTE;
+        dma_init_struct.peripheral_inc_enable = FALSE;
+        dma_init_struct.priority = DMA_PRIORITY_LOW;
+        dma_init_struct.loop_mode_enable = TRUE;
+        dma_init(DMA1_CHANNEL1, &dma_init_struct);
+      
+        /* flexible function enable */
+        dma_flexible_config(DMA1, FLEX_CHANNEL1, DMA_FLEXIBLE_UART1_RX);
+
+
+        DMA1_CHANNEL1->dtcnt = DMA1_CHANNEL1_BUFFER_SIZE;
+        DMA1_CHANNEL1->paddr = (uint32_t)&us->dt;
+        DMA1_CHANNEL1->maddr = (uint32_t)uartDrv.rxDmaBuf;
+
         dma_channel_enable(DMA1_CHANNEL1, TRUE);
         
         /* Enable DMA mode on USART */

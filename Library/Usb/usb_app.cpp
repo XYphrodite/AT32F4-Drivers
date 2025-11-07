@@ -25,12 +25,9 @@
 /* add user code end Header */
 
 #include "usb_conf.h"
-#include "wk_system.h"
-
 #include "usbd_int.h"
 #include "cdc_class.h"
 #include "cdc_desc.h"
-
 #include "usb_app.h"
 
 usbd_core_type usb_core_dev;

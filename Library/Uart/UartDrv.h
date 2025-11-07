@@ -14,7 +14,6 @@ extern "C" {
 #include "Macros.h"
 #include "at32f403a_407_clock.h"
 #include "at32f403a_407_usart.h"
-#include "at32f403a_407_wk_config.h"
 #include "unitControl.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -32,6 +31,7 @@ extern "C" {
 
 #define USART1_BAUD_RATE (115200U) // Скорость RS485 Master
 #define RX_RING_BUF_SIZE (512U)
+#define DMA1_CHANNEL1_BUFFER_SIZE (512U)
 
 /* USART mode enumeration */
 typedef enum {

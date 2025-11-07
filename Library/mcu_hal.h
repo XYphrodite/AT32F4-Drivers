@@ -5,8 +5,6 @@
 #include "at32f403a_407.h"
 #include "at32f403a_407_rtc.h"
 #include "at32f403a_407_pwc.h"
-#include "at32f403a_407_wk_config.h"
-#include "wk_system.h"
 
 #ifdef __cplusplus
 extern "C"

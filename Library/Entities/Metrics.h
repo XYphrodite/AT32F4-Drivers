@@ -2,8 +2,6 @@
 #define _METRICS_H_
 
 #include "at32f403a_407_conf_template.h"
-#include "at32f403a_407_wk_config.h"
-#include "wk_system.h"
 #include "at32f403a_407_clock.h"
 #include <cstring>
 #include <limits>
