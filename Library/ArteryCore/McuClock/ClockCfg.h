@@ -1,7 +1,6 @@
 #ifndef _CLOCK_CFG_H_
 #define _CLOCK_CFG_H_
 
-#include <at32f403a_407.h>
 #include "DelayService.h"
 
 enum MCU_speed : uint8_t
