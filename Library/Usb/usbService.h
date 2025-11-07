@@ -10,6 +10,7 @@
 #include "CommandHandler.h"
 #include <cstdlib>
 #include "PacketWrapper.h"
+#include "BprDriver.h"
 
 #define USB_TXBUF_SIZE (256U)
 #define USB_RXBUF_SIZE (512U)

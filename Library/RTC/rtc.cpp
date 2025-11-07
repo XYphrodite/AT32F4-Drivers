@@ -23,6 +23,7 @@
  */
 
 #include "rtc.h"
+#include "ArteryCore/BprDriver/BprDriver.h"
 
 /** @addtogroup AT32F403A_F407_periph_examples
  * @{

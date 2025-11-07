@@ -4,6 +4,7 @@
 #include <fastmath.h>
 #include <stdlib.h>
 #include "Consts.h"
+#include "MyMath.h"
 
 UartService::UartService(/* args */)
 {

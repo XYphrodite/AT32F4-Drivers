@@ -1,4 +1,5 @@
 #include "Bootload.h"
+#include "BprDriver.h"
 
 #ifndef PREBOOT
 

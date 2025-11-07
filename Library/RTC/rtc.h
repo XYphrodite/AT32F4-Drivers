@@ -26,7 +26,6 @@
 #define __RTC_H
 
 #include "at32f403a_407.h"
-#include "BprService.h"
 
 #ifdef __cplusplus
 extern "C"
