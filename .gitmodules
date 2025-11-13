@@ -7,3 +7,6 @@
 [submodule "at32f403a-407-docs"]
 	path = at32f403a-407-docs
 	url = https://github.com/xyphrodite/at32f403a-407-docs.git
+[submodule "Library/externals/CANopenNode"]
+	path = Library/externals/CANopenNode
+	url = https://github.com/CANopenNode/CANopenNode.git
