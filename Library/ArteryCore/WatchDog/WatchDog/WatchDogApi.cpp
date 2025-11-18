@@ -12,7 +12,7 @@ extern "C"
 }
 
 // Choose implementation at compile time
-#define USE_HEALTH_CHECK_WDT  // Comment out for simple WDT
+// #define USE_HEALTH_CHECK_WDT  // Comment out for simple WDT
 
 void watchdog_init(void)
 {
