@@ -34,11 +34,19 @@
 // } ErrorJournalCounts_t;
 
 enum ErrorJournalRecordType : uint8_t {
-  ERROR_JOURNAL_RECORD_TYPE_WDT = 0,
-  ERROR_JOURNAL_RECORD_TYPE_SPI1 = 1,
-  ERROR_JOURNAL_RECORD_TYPE_UART1 = 2,
-  ERROR_JOURNAL_RECORD_TYPE_CAN = 3,
-  ERROR_JOURNAL_RECORD_TYPE_MCU = 4,
+  ERROR_TYPE_WDT = 0,      // Watchdog timeout
+  ERROR_TYPE_SPI1,         // SPI1 communication error
+  ERROR_TYPE_UART1,        // UART1 communication error
+  ERROR_TYPE_CAN,          // CAN bus error
+  ERROR_TYPE_MCU,          // MCU internal error
+  ERROR_TYPE_MODBUS,       // Modbus protocol error
+  ERROR_TYPE_ADC,          // ADC error
+  ERROR_TYPE_GPIO,         // GPIO error
+  ERROR_TYPE_COIL,         // Relay/Coil control error
+  ERROR_TYPE_CONFIG,       // Configuration error
+  ERROR_TYPE_USER,         // User-defined error
+  ERROR_TYPE_TEMPERATURE_SENSOR, // Temperature sensor error
+  ERROR_TYPE_MAX
 };
 
 typedef struct {
@@ -49,9 +57,12 @@ typedef struct {
 
 
 typedef struct ErrorJournalRecord {
-  ErrorJournalRecordType type;
-  calendar_type dateTime;
-  uint8_t data[23];
+  ErrorJournalRecordType type;              // Тип ошибки (ErrorJournalRecordType)
+  uint8_t level;             // Уровень: 0=trace, 1=warning, 2=error, 3=fatal
+  uint32_t timestamp;        // Время возникновения (RTC или uptime в секундах)
+  // uint16_t code;             // Код ошибки (зависит от типа)
+  // uint16_t context;          // Контекст (например, task ID, register address)
+  char message[26];          // Краткое сообщение (опционально)
 } ErrorJournalRecord_t;
 
 

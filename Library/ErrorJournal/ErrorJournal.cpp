@@ -10,6 +10,7 @@ ErrorJournalRecordMap_t ErrorJournalRecordMap[] = {
     {ERROR_TYPE_MODBUS, 0},                       // Modbus protocol error
     {ERROR_TYPE_ADC, 0},                          // ADC error
     {ERROR_TYPE_GPIO, 0},                         // GPIO error
+    {ERROR_TYPE_COIL, 0},                         // Relay/Coil control error
     {ERROR_TYPE_CONFIG, 0},                       // Configuration error
     {ERROR_TYPE_USER, 0},                         // User-defined error
     {ERROR_TYPE_TEMPERATURE_SENSOR, 0},           // Temperature sensor error
