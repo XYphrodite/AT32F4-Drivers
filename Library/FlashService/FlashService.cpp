@@ -121,7 +121,7 @@ bool FlashService::Programm(uint32_t address, uint8_t *buff, uint32_t length)
 
 #include <cstring> // for memcpy
 
-bool FlashService::Read(uint32_t address, uint8_t *buff, uint32_t size)
+bool FlashService::Read(uint32_t address, void *buff, uint32_t size)
 {
     for (size_t i = 0; i < size;)
     {
@@ -153,7 +153,7 @@ bool FlashService::Read(uint32_t address, uint8_t *buff, uint32_t size)
     return true;
 }
 
-bool FlashService::IsDiffer(uint32_t address, uint8_t *buff, uint32_t size)
+bool FlashService::IsDiffer(uint32_t address, void *buff, uint32_t size)
 {
     uint8_t *flash_ptr = reinterpret_cast<uint8_t *>(address);
 
@@ -173,7 +173,7 @@ bool FlashService::Reprogramm(uint32_t address, uint8_t *buff, uint32_t size)
     return false;
 }
 
-bool FlashService::CheckDiffAndReprogramm(uint32_t address, uint8_t *buff, uint32_t size)
+bool FlashService::CheckDiffAndReprogramm(uint32_t address, void *buff, uint32_t size)
 {
     if (FlashService::IsDiffer(address, buff, size))
         return FlashService::Reprogramm(address, buff, size);

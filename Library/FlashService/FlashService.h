@@ -39,19 +39,19 @@ public:
 
     static void Init(void);
     // read
-    static bool Read(uint32_t address, uint8_t *buff, uint32_t size);
+    static bool Read(uint32_t address, void *buff, uint32_t size);
     // erase
     static bool EraseSectorByNum(uint16_t sector_num);
     static bool EraseSectorByAddr(uint32_t address);
     static bool EraseSectorByAddr(uint32_t address, uint16_t amount);
 
     // utilities
-    static bool IsDiffer(uint32_t address, uint8_t *buff, uint32_t size);
+    static bool IsDiffer(uint32_t address, void *buff, uint32_t size);
 
     // programm
     static bool Programm(uint32_t address, uint8_t *buff, uint32_t length);
-    static bool Reprogramm(uint32_t address, uint8_t *buff, uint32_t size);
-    static bool CheckDiffAndReprogramm(uint32_t address, uint8_t *buff, uint32_t size);
+    static bool Reprogramm(uint32_t address, void *buff, uint32_t size);
+    static bool CheckDiffAndReprogramm(uint32_t address, void *buff, uint32_t size);
 
     // memory protection
     static bool IsMemoryProtect(void);

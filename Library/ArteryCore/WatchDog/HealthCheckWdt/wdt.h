@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-#include "ErrorJournal.h"
 #include "Tracing.h"
 #include "WatchDogApi.h"
 #include "at32f403a_407.h"
