@@ -1,5 +1,6 @@
 #include "Bootload.h"
 #include "BprDriver.h"
+#include "PinDefines.h"
 
 #ifndef PREBOOT
 

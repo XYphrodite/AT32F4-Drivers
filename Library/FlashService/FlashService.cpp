@@ -123,29 +123,30 @@ bool FlashService::Programm(uint32_t address, uint8_t *buff, uint32_t length)
 
 bool FlashService::Read(uint32_t address, void *buff, uint32_t size)
 {
+    uint8_t *buff_ptr = reinterpret_cast<uint8_t *>(buff);
     for (size_t i = 0; i < size;)
     {
         if (size - i >= 4)
         {
             uint32_t value = *reinterpret_cast<uint32_t *>(address);
-            std::memcpy(buff, &value, sizeof(uint32_t));
+            std::memcpy(buff_ptr, &value, sizeof(uint32_t));
             address += sizeof(uint32_t);
-            buff += sizeof(uint32_t);
+            buff_ptr += sizeof(uint32_t);
             i += sizeof(uint32_t);
         }
         else if (size - i >= 2)
         {
             uint16_t value = *reinterpret_cast<uint16_t *>(address);
-            std::memcpy(buff, &value, sizeof(uint16_t));
+            std::memcpy(buff_ptr, &value, sizeof(uint16_t));
             address += sizeof(uint16_t);
-            buff += sizeof(uint16_t);
+            buff_ptr += sizeof(uint16_t);
             i += sizeof(uint16_t);
         }
         else
         {
-            *buff = *reinterpret_cast<uint8_t *>(address);
+            *buff_ptr = *reinterpret_cast<uint8_t *>(address);
             address += sizeof(uint8_t);
-            buff += sizeof(uint8_t);
+            buff_ptr += sizeof(uint8_t);
             i += sizeof(uint8_t);
         }
     }
@@ -156,19 +157,20 @@ bool FlashService::Read(uint32_t address, void *buff, uint32_t size)
 bool FlashService::IsDiffer(uint32_t address, void *buff, uint32_t size)
 {
     uint8_t *flash_ptr = reinterpret_cast<uint8_t *>(address);
+    uint8_t *buff_ptr = reinterpret_cast<uint8_t *>(buff);
 
     for (uint32_t i = 0; i < size; ++i)
-        if (flash_ptr[i] != buff[i])
+        if (flash_ptr[i] != buff_ptr[i])
             return true;
     return false;
 }
 
-bool FlashService::Reprogramm(uint32_t address, uint8_t *buff, uint32_t size)
+bool FlashService::Reprogramm(uint32_t address, void *buff, uint32_t size)
 {
     if (FlashService::EraseSectorByAddr(address))
     {
         delay_ms(50);
-        return FlashService::Programm(address, buff, size);
+        return FlashService::Programm(address, reinterpret_cast<uint8_t *>(buff), size);
     }
     return false;
 }

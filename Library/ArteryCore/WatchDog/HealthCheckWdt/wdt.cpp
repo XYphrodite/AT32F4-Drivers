@@ -1,4 +1,5 @@
 #include "wdt.h"
+#include <cstring>
 
 WatchDogSubject_t wds;
 
