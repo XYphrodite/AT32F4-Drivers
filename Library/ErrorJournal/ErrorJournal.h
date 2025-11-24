@@ -102,6 +102,7 @@ public:
   ~ErrorJournal(void) = delete;
 
   static void Init(void);
+  static uint16_t TryAdd(ErrorJournalRecord* record);
 
 
 

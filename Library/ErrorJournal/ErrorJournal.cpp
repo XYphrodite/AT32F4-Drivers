@@ -46,4 +46,12 @@ ErrorJournalRecord::ErrorJournalRecord(const ErrorJournalRecordType type,
   ErrorJournalRecordMap_t map = ErrorJournal::GetErrMap(type);
   uint16_t message_length = strlen(message) <= 26 ? strlen(message) : 26;
   memcpy(_message, message, strlen(message));
+
+  if (saving) {
+    ErrorJournal::TryAdd(this);
+  }
+}
+
+uint16_t ErrorJournal::TryAdd(ErrorJournalRecord* record) {
+  return 0;
 }
