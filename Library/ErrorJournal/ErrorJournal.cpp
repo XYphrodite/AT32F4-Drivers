@@ -1,24 +1,18 @@
 #include "ErrorJournal.h"
 #include "FlashService.h"
+#include <cstdint>
+#include <cstring>
 
-ErrorJournalRecordMap_t ErrorJournalRecordMap[] = {
-    {ERROR_TYPE_WDT, 0},                          // Watchdog timeout
-    {ERROR_TYPE_SPI1, 0},                         // SPI1 communication error
-    {ERROR_TYPE_UART1, 0},                        // UART1 communication error
-    {ERROR_TYPE_CAN, 0},                          // CAN bus error
-    {ERROR_TYPE_MCU, 0},                          // MCU internal error
-    {ERROR_TYPE_MODBUS, 0},                       // Modbus protocol error
-    {ERROR_TYPE_ADC, 0},                          // ADC error
-    {ERROR_TYPE_GPIO, 0},                         // GPIO error
-    {ERROR_TYPE_COIL, 0},                         // Relay/Coil control error
-    {ERROR_TYPE_CONFIG, 0},                       // Configuration error
-    {ERROR_TYPE_USER, 0},                         // User-defined error
-    {ERROR_TYPE_TEMPERATURE_SENSOR, 0},           // Temperature sensor error
-};
+ErrorJournalRecord ErrorJournal::errJrnlCountsRecord[1280];
 
-ErrorJournalRecord_t ErrorJournal::errJrnlCountsRecord[1280];
+void ErrorJournalRecord::LoadFromFlashByAdress(uint32_t address) {}
 
-void ErrorJournal::Init(void) {}
+void ErrorJournalRecord::LoadFromFlashByIndex(uint16_t index) {}
+
+void ErrorJournal::Init(void) {
+  LoadData();
+  CheckWDTRst();
+}
 
 bool ErrorJournal::LoadData(void) {
   return false;
@@ -34,4 +28,22 @@ void ErrorJournal::CheckWDTRst(void) {
     // errJrnlCounts.wdt_rst++;
     // SaveData();
   }
+}
+
+ErrorJournalRecordMap_t ErrorJournal::GetErrMap(ErrorJournalRecordType type) {
+  for (uint16_t i = 0; i < ErrorJournalRecordMapSize; i++) {
+    if (ErrorJournalRecordMap[i].type == type) {
+      return ErrorJournalRecordMap[i];
+    }
+  }
+  return ErrorJournalRecordMap[0];
+}
+
+ErrorJournalRecord::ErrorJournalRecord(const ErrorJournalRecordType type,
+                                       const ErrorLevelType level,
+                                       const char *message, const bool saving)
+    : index(0), address(0), type(type), level(level), timestamp(0) {
+  ErrorJournalRecordMap_t map = ErrorJournal::GetErrMap(type);
+  uint16_t message_length = strlen(message) <= 26 ? strlen(message) : 26;
+  memcpy(_message, message, strlen(message));
 }
