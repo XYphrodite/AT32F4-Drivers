@@ -90,7 +90,7 @@ private:
   uint16_t total_records; // Общее количество записей
   uint16_t last_index;    // Индекс последней записи
 
-  static ErrorJournalRecord errJrnlCountsRecord[1280];
+  // static ErrorJournalRecord errJrnlCountsRecord[1280]; # TOO MUCH MEMORY USING
 
   static bool LoadData(void);
   static void SaveData(void);

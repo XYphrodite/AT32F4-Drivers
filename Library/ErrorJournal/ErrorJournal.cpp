@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <cstring>
 
-ErrorJournalRecord ErrorJournal::errJrnlCountsRecord[1280];
+// ErrorJournalRecord ErrorJournal::errJrnlCountsRecord[1280];
 
 void ErrorJournalRecord::LoadFromFlashByAdress(uint32_t address) {}
 
