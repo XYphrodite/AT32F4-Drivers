@@ -1,15 +1,9 @@
 #include "MS5614-Api.h"
+#include "general_spi.h"
 
 MS5614::MS5614(uint8_t cs_pin, uint8_t sclk_pin, uint8_t din_pin, uint8_t fs_pin)
-    : cs_pin_(cs_pin), sclk_pin_(sclk_pin), din_pin_(din_pin), fs_pin_(fs_pin) {
-    spi =  GENERAL_SPI();
-    spi.gsc->cs_pin = cs_pin;
-    spi.gsc->sclk_pin = sclk_pin;
-    spi.gsc->din_pin = din_pin;
-    spi.gsc->fs_pin = fs_pin;
-    gpioInit(cs_pin_, OUTPUT);
-
-    gpioInit(fs_pin_, OUTPUT);
+    : spi(), cs_pin_(cs_pin), sclk_pin_(sclk_pin), din_pin_(din_pin), fs_pin_(fs_pin) {
+        spi = GENERAL_SPI();
 }
 
 void MS5614::setOutput(Channel channel, uint16_t value, PowerMode power, RateMode rate) {
@@ -30,20 +24,23 @@ void MS5614::powerDown() {
 }
 
 void MS5614::sendCommand(uint16_t command) {
-    // Assert CS (low)
-    digitalWrite(cs_pin_, LOW);
+    uint8_t command_bytes[2];
+    
+    command_bytes[0] = (command >> 8) & 0xFF;
+    command_bytes[1] = command & 0xFF;
 
-    // Send 16 bits MSB first
-    for (int i = 15; i >= 0; --i) {
-        digitalWrite(sclk_pin_, LOW);
-        digitalWrite(din_pin_, (command >> i) & 1);
-        digitalWrite(sclk_pin_, HIGH);
+    spi.set_cs(SET);
+    if (spi.hal_write(&command_bytes[0]) != SUCCESS) {
+        spi.set_cs(RESET);
+        return;
     }
-
-    // Assert FS (low, then high) to update DAC output
-    digitalWrite(fs_pin_, LOW);
-    digitalWrite(fs_pin_, HIGH);
-
-    // Deassert CS (high)
-    digitalWrite(cs_pin_, HIGH);
+    if (spi.hal_write(&command_bytes[1]) != SUCCESS) {
+        spi.set_cs(RESET);
+        return;
+    }
+    if (spi.waitUntilLastByteSend() != SUCCESS) {
+        spi.set_cs(RESET);
+        return;
+    }
+    spi.set_cs(RESET);
 }

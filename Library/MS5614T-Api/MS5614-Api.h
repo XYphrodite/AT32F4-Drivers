@@ -3,7 +3,7 @@
 
 class MS5614 {
 public:
-    GENERAL_SPI* spi;
+    GENERAL_SPI spi;
 
     enum class Channel { A = 0, B = 1, C = 2, D = 3 };
     enum class PowerMode { Normal = 0, PowerDown = 1 };
