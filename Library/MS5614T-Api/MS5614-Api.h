@@ -1,7 +1,10 @@
 #include <cstdint>
+#include "general_spi.h"
 
 class MS5614 {
 public:
+    GENERAL_SPI* spi;
+
     enum class Channel { A = 0, B = 1, C = 2, D = 3 };
     enum class PowerMode { Normal = 0, PowerDown = 1 };
     enum class RateMode { Slow = 0, Fast = 1 };
