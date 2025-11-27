@@ -39,6 +39,8 @@ void pinInit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode,
 struct PinConfig {
   gpio_type *port;
   uint16_t pin;
+
+  PinConfig(gpio_type *_port, uint16_t _pin);
 };
 
 struct PinControl {

@@ -57,6 +57,8 @@ void pinInit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode, gpio_pull_type pu
   gpio_init(gpio_x, &gpio_init_struct);
 }
 
+PinConfig::PinConfig(gpio_type *_port, uint16_t _pin) : port(_port), pin(_pin) {}
+
 PinControl::PinControl(gpio_type *_port, uint16_t _pin, PinMode_t _mode, gpio_pull_type _pull) 
   : state(false), mode(_mode), pull(_pull) { 
   config.port = _port;
