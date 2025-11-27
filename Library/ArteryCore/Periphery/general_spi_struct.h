@@ -20,6 +20,8 @@
         uint8_t unit_name; //UNIT_NAME
     } general_spi_cfg_t;
 
+    //TODO: Replace with PinConfig
+
 // #ifdef __cplusplus
 // }
 // #endif

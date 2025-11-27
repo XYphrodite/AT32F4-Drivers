@@ -58,8 +58,10 @@ void pinInit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode, gpio_pull_type pu
 }
 
 PinControl::PinControl(gpio_type *_port, uint16_t _pin, PinMode_t _mode, gpio_pull_type _pull) 
-  : port(_port), pin(_pin), state(false), mode(_mode), pull(_pull) { 
-  pinInit(port, static_cast<uint32_t>(pin), mode, pull);
+  : state(false), mode(_mode), pull(_pull) { 
+  config.port = _port;
+  config.pin = _pin;
+  pinInit(config.port, static_cast<uint32_t>(config.pin), mode, pull);
 }
 
 PinControl::~PinControl() {}
@@ -67,15 +69,15 @@ PinControl::~PinControl() {}
 void PinControl::Set(bool state) {
   this->state = state;
   if(state) {
-    gpio_bits_set(port, static_cast<uint32_t>(pin));
+    gpio_bits_set(config.port, static_cast<uint32_t>(config.pin));
   }
   else {
-    gpio_bits_reset(port, static_cast<uint32_t>(pin));
+    gpio_bits_reset(config.port, static_cast<uint32_t>(config.pin));
   }
 }
 
 bool PinControl::Get() {
-  return gpio_output_data_bit_read(port, static_cast<uint32_t>(pin));
+  return gpio_output_data_bit_read(config.port, static_cast<uint32_t>(config.pin));
 }
 
 void PinControl::Toggle() {
@@ -83,9 +85,9 @@ void PinControl::Toggle() {
 }
 
 void PinControl::Reinit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode, gpio_pull_type pull) {
-  this->port = gpio_x;
-  this->pin = pins;
+  this->config.port = gpio_x;
+  this->config.pin = pins;
   this->mode = mode;
   this->pull = pull;
-  pinInit(this->port, static_cast<uint32_t>(this->pin), this->mode, this->pull);
+  pinInit(this->config.port, static_cast<uint32_t>(this->config.pin), this->mode, this->pull);
 }
