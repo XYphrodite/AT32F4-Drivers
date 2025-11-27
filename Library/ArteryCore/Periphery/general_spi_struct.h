@@ -1,6 +1,7 @@
 #ifndef _GENERAL_SPI_STRUCT_H_
 #define _GENERAL_SPI_STRUCT_H_
 
+#include "gpio.h"
 #include "unitControl.h"
 
 // #ifdef __cplusplus
@@ -9,18 +10,14 @@
 
     typedef struct general_spi_cfg {
         spi_type* spi;
-        uint16_t mosi_pin;
-        gpio_type* mosi_type;
-        uint16_t miso_pin;
-        gpio_type* miso_type;
-        uint16_t sck_pin;
-        gpio_type* sck_type;
-        uint16_t cs_pin;
-        gpio_type* cs_type;
+
+        PinConfig mosi_pin;
+        PinConfig miso_pin;
+        PinConfig sck_pin;
+        PinConfig cs_pin;
+
         uint8_t unit_name; //UNIT_NAME
     } general_spi_cfg_t;
-
-    //TODO: Replace with PinConfig
 
 // #ifdef __cplusplus
 // }
