@@ -12,8 +12,9 @@ private:
 
 public:
     // void* gsc;
-    general_spi_cfg* gsc;
+    general_spi_cfg_t* gsc;
     GENERAL_SPI(/* args */);
+    GENERAL_SPI(general_spi_cfg_t* gsc);
     ~GENERAL_SPI();
     error_status hal_write(const uint8_t* buff);
     error_status hal_read(uint8_t* buff);

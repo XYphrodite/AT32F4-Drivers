@@ -3,15 +3,17 @@
 GENERAL_SPI::GENERAL_SPI(/* args */) {
 }
 
+GENERAL_SPI::GENERAL_SPI(general_spi_cfg_t* gsc) : gsc(gsc) {}
+
 GENERAL_SPI::~GENERAL_SPI() {
 }
 
 void GENERAL_SPI::set_cs(flag_status new_status) {
     if (new_status == SET) {
-        gpio_bits_set(gsc->cs_type, gsc->cs_pin);
+        gpio_bits_set(gsc->cs_pin.port, static_cast<uint32_t>(gsc->cs_pin.pin));
     }
     else {
-        gpio_bits_reset(gsc->cs_type, gsc->cs_pin);
+        gpio_bits_reset(gsc->cs_pin.port, static_cast<uint32_t>(gsc->cs_pin.pin));
     }
 }
 
