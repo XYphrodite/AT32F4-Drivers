@@ -32,6 +32,7 @@ extern "C"
         UART_UNIT = 0x4,
         MCU_UNIT = 0x5,
         I2C1_UNIT = 0x6,
+        MS5614_UNIT = 0x7,
     } UNIT_NAME;
 
     typedef struct UnitRST
