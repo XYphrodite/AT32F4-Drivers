@@ -37,10 +37,14 @@ void pinInit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode,
 #ifdef __cplusplus
 
 struct PinConfig {
+public:
   gpio_type *port;
   uint16_t pin;
 
+  PinConfig();
   PinConfig(gpio_type *_port, uint16_t _pin);
+
+  ~PinConfig();
 };
 
 struct PinControl {
@@ -60,6 +64,8 @@ public:
   void Reinit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode,
              gpio_pull_type pull);
 };
+
+void pinInit(PinConfig config, PinMode_t mode, gpio_pull_type pull);
 
 #endif
 
