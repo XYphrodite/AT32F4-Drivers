@@ -37,11 +37,11 @@ RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 96K
 SPIM (rx)       : ORIGIN = 0x08400000, LENGTH = 0K
 }
 
-_sapp = ORIGIN(FLASH);
-
 /* Define output sections */
 SECTIONS
 {
+  /* Application start address symbol - must be absolute */
+  _sapp = ABSOLUTE(ORIGIN(FLASH));
   /* The startup code goes first into FLASH */
   .isr_vector :
   {
