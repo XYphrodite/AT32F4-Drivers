@@ -2,11 +2,15 @@
 #include "general_spi.h"
 #include "gpio.h"
 
-MS5614::MS5614(uint8_t cs_pin, uint8_t sclk_pin, uint8_t din_pin, uint8_t fs_pin)
-    : spi(), cs_pin_(cs_pin), sclk_pin_(sclk_pin), din_pin_(din_pin), fs_pin_(fs_pin) {
+MS5614::MS5614(PinConfig cs_pin, PinConfig sclk_pin, PinConfig din_pin, PinConfig fs_pin)
+    : spi(), fs_pin(fs_pin)  {
         spi = GENERAL_SPI();
-
+        spi.gsc->cs_pin = cs_pin;
+        spi.gsc->sck_pin = sclk_pin;
+        spi.gsc->mosi_pin = din_pin;
+        spi.gsc->unit_name = MS5614_UNIT;
 }
+
 
 void MS5614::setOutput(Channel channel, uint16_t value, PowerMode power, RateMode rate) {
     uint16_t command = 0;

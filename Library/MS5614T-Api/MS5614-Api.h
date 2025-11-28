@@ -10,7 +10,7 @@ public:
   enum class RateMode { Slow = 0, Fast = 1 };
 
   // Constructor
-  MS5614(uint8_t cs_pin, uint8_t sclk_pin, uint8_t din_pin, uint8_t fs_pin);
+  MS5614(PinConfig cs_pin, PinConfig sclk_pin, PinConfig din_pin, PinConfig fs_pin);
 
   // Set output voltage for a channel (0-4095 for 12-bit DAC)
   void setOutput(Channel channel, uint16_t value,
