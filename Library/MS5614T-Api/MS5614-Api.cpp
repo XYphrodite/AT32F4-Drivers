@@ -6,7 +6,6 @@ MS5614::MS5614(uint8_t cs_pin, uint8_t sclk_pin, uint8_t din_pin, uint8_t fs_pin
     : spi(), cs_pin_(cs_pin), sclk_pin_(sclk_pin), din_pin_(din_pin), fs_pin_(fs_pin) {
         spi = GENERAL_SPI();
 
-        spi.gsc->cs_pin = PinConfig()
 }
 
 void MS5614::setOutput(Channel channel, uint16_t value, PowerMode power, RateMode rate) {
