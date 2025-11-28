@@ -7,11 +7,11 @@ extern "C"
 #endif
 #include "at32f403a_407.h"
 #include <stdbool.h>
-#include <string.h>
 #include "Macros.h"
 #ifndef PREBOOT
 #include "MyMath.h"
 #endif
+
 
 #define BPR_CONFIG_VERSION (1U)
 

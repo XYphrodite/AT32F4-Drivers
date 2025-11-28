@@ -11,6 +11,7 @@
 #endif
 // #include <math.h>
 #include <cmath>
+#include "BprDriver.h"
 
 struct MetricsErr
 {

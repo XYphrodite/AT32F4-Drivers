@@ -1,4 +1,10 @@
 #include "BprDriver.h"
+#include "at32f403a_407.h"
+#include <stddef.h>
+
+extern "C" {
+    void* memcpy(void* dest, const void* src, size_t n);
+}
 
 static uint16_t bpr_buffer[8];
 
@@ -19,26 +25,26 @@ const bpr_data_type service_errors_bpr = BPR_DATA29;
 bpr_service_error_f service_errors;
 
 const bpr_data_type voltages_raw_div_2_sum_1_halfword_bpr = BPR_DATA30;
-const bpr_data_type voltages_raw_div_2_sum_2_halfword_bpr = BPR_DATA31;
+// const bpr_data_type voltages_raw_div_2_sum_2_halfword_bpr = BPR_DATA31;
 uint32_t voltages_raw_div_2_sum = 0;
 
 const bpr_data_type voltages_raw_all_sum_1_halfword_bpr = BPR_DATA32;
-const bpr_data_type voltages_raw_all_sum_2_halfword_bpr = BPR_DATA33;
+// const bpr_data_type voltages_raw_all_sum_2_halfword_bpr = BPR_DATA33;
 uint32_t voltages_raw_all_sum = 0;
 
 const bpr_data_type measurements_amount_bpr = BPR_DATA34;
 uint16_t measurements_amount = 0;
 
 const bpr_data_type top_temperatures_sum_1_halfword_bpr = BPR_DATA35;
-const bpr_data_type top_temperatures_sum_2_halfword_bpr = BPR_DATA36;
-const bpr_data_type top_temperatures_sum_3_halfword_bpr = BPR_DATA37;
-const bpr_data_type top_temperatures_sum_4_halfword_bpr = BPR_DATA38;
+// const bpr_data_type top_temperatures_sum_2_halfword_bpr = BPR_DATA36;
+// const bpr_data_type top_temperatures_sum_3_halfword_bpr = BPR_DATA37;
+// const bpr_data_type top_temperatures_sum_4_halfword_bpr = BPR_DATA38;
 int64_t top_temperatures_sum = 0;
 
 const bpr_data_type main_temperatures_sum_1_halfword_bpr = BPR_DATA39;
-const bpr_data_type main_temperatures_sum_2_halfword_bpr = BPR_DATA40;
-const bpr_data_type main_temperatures_sum_3_halfword_bpr = BPR_DATA41;
-const bpr_data_type main_temperatures_sum_4_halfword_bpr = BPR_DATA42;
+// const bpr_data_type main_temperatures_sum_2_halfword_bpr = BPR_DATA40;
+// const bpr_data_type main_temperatures_sum_3_halfword_bpr = BPR_DATA41;
+// const bpr_data_type main_temperatures_sum_4_halfword_bpr = BPR_DATA42;
 int64_t main_temperatures_sum = 0;
 
 void init_bpr_logick(void)
@@ -178,7 +184,7 @@ bool get_runRX(void)
 
 void read_several_from_bpr(bpr_data_type start, uint8_t size)
 {
-    for (size_t i = 0; i < size; i++)
+    for (uint8_t i = 0; i < size; i++)
         bpr_buffer[i] = bpr_data_read(static_cast<bpr_data_type>(start + 0x4 * i));
 }
 
@@ -186,7 +192,7 @@ void write_several_to_bpr(bpr_data_type start, uint8_t size, void *value)
 {
     uint16_t data[size];
     memcpy(data, value, size * 2);
-    for (size_t i = 0; i < size; i++)
+    for (uint8_t i = 0; i < size; i++)
     {
         bpr_data_write(static_cast<bpr_data_type>(start + 4 * i), data[i]);
     }

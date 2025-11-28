@@ -31,10 +31,9 @@ void pinInit(gpio_type *gpio_x, uint32_t pins, PinMode_t mode,
              gpio_pull_type pull);
 
 #ifdef __cplusplus
-}
-#endif
+} // extern "C"
 
-#ifdef __cplusplus
+// C++ section - PinConfig and overloads
 
 struct PinConfig {
 public:
@@ -65,9 +64,10 @@ public:
              gpio_pull_type pull);
 };
 
-void pinInit(PinConfig config, PinMode_t mode, gpio_pull_type pull);
+// C++ overload - uses PinConfig struct (C++ linkage, not C)
+extern "C++" void pinInit(PinConfig config, PinMode_t mode, gpio_pull_type pull);
 
-#endif
+#endif // __cplusplus
 
 
 
