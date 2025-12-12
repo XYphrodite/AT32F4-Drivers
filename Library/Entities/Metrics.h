@@ -1,8 +1,7 @@
 #ifndef _METRICS_H_
 #define _METRICS_H_
 
-#include "at32f403a_407_conf_template.h"
-#include "at32f403a_407_clock.h"
+#include "at32f403a_407.h"
 #include <cstring>
 #include <limits>
 #include <cstdint>

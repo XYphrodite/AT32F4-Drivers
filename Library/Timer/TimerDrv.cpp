@@ -1,5 +1,5 @@
 #include "TimerDrv.h"
-#include "at32f403a_407_clock.h"
+#include "at32f403a_407.h"
 #include <stddef.h>
 
 /* External reference to system core clock */

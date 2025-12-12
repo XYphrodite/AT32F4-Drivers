@@ -12,7 +12,7 @@ extern "C" {
 
 #include "Consts.h"
 #include "Macros.h"
-#include "at32f403a_407_clock.h"
+#include "at32f403a_407.h"
 #include "at32f403a_407_usart.h"
 #include "unitControl.h"
 #include <stdint.h>
