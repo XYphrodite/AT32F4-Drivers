@@ -3,10 +3,15 @@
 
 #include "at32f403a_407.h"
 #include "can_driver.h"
+#include <string.h>
 
-void can_init(void);
-void can_transmit_message(uint32_t id, uint8_t *data, uint8_t length);
-void can_receive_message(uint32_t *id, uint8_t *data, uint8_t *length);
-void can_diagnose_errors(void);
+
+class CanApi{
+    public:
+    void Init(void);
+    void TransmitMessage(uint32_t id, uint8_t *data, uint8_t length);
+    void ReceiveMessage(uint32_t *id, uint8_t *data, uint8_t *length);
+    void DiagnoseErrors(void);
+};
 
 #endif
