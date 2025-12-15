@@ -47,11 +47,26 @@ error_status can_communication_configuration(void)
   /* Enable CAN interrupts */
   nvic_irq_enable(CAN1_SE_IRQn, 0, 0);
   nvic_irq_enable(USBFS_L_CAN1_RX0_IRQn, 0, 0);
-  can_interrupt_enable(CAN1, CAN_RF0MIEN_INT, TRUE);   /* RX FIFO0 message */
-  can_interrupt_enable(CAN1, CAN_ETRIEN_INT, TRUE);   /* Error type record */
-  can_interrupt_enable(CAN1, CAN_EOIEN_INT, TRUE);    /* Error occurrence */
+  can_interrupts_enable();
 
   return SUCCESS;
+}
+
+static void can_configure_interrupts(confirm_state state)
+{
+  can_interrupt_enable(CAN1, CAN_RF0MIEN_INT, state);  /* RX FIFO0 message */
+  can_interrupt_enable(CAN1, CAN_ETRIEN_INT, state);   /* Error type record */
+  can_interrupt_enable(CAN1, CAN_EOIEN_INT, state);    /* Error occurrence */
+}
+
+void can_interrupts_enable(void)
+{
+  can_configure_interrupts(TRUE);
+}
+
+void can_interrupts_disable(void)
+{
+  can_configure_interrupts(FALSE);
 }
 
 void can_gpio_config(void)

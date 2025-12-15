@@ -11,5 +11,7 @@ void can_transmit_std_message(uint32_t std_id, uint8_t *data, uint8_t length);
 void can_transmit_data(void);
 void can_receive_message(can_rx_message_type *rx_message);
 void can_diagnose_errors(void);
+void can_interrupts_enable(void);
+void can_interrupts_disable(void);
 
 #endif
