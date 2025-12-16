@@ -13,5 +13,6 @@ void can_receive_message(can_rx_message_type *rx_message);
 void can_diagnose_errors(void);
 void can_interrupts_enable(void);
 void can_interrupts_disable(void);
+void can_cancel_pending_tx(can_type *can_x);
 
 #endif

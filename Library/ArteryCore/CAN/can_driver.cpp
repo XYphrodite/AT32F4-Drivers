@@ -273,3 +273,14 @@ void can_diagnose_errors(void)
     tx_error_cnt = can_transmit_error_counter_get(CAN1);
     rx_error_cnt = can_receive_error_counter_get(CAN1);
 }
+
+void can_cancel_pending_tx(can_type *can_x)
+{
+  for (can_tx_mailbox_num_type mb = CAN_TX_MAILBOX0; mb <= CAN_TX_MAILBOX2; mb++)
+  {
+    if (can_transmit_status_get(can_x, mb) == CAN_TX_STATUS_PENDING)
+    {
+      can_transmit_cancel(can_x, mb);
+    }
+  }
+}
