@@ -22,6 +22,22 @@ extern "C"
     //   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     // }
 
+    /**
+     * @brief Extract bits from a value by shifting right and applying mask
+     * @param value The input value
+     * @param shift Number of bits to shift right
+     * @param mask Bit mask to apply after shifting
+     * @return Extracted bits
+     * 
+     * @example EXTRACT_BITS(0x1ABC, 8, 0x0F) returns 0x0A (bits 8-11)
+     * @example EXTRACT_BITS(buffer->ident, 11, 0x0F) extracts DLC from CANopen ident
+     * 
+     * @note Type-safe and generates efficient code
+     * @note Works with any integer type (uint8_t, uint16_t, uint32_t, etc.)
+     */
+    #define EXTRACT_BITS(value, shift, mask) \
+        (((__typeof__(value))((value) >> (shift))) & (mask))
+
     float myAbs(float d);
 
 #ifdef __cplusplus
