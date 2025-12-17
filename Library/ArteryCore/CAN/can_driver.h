@@ -3,6 +3,13 @@
 
 #include "at32f403a_407.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Callback function pointer type for CAN interrupt handling */
+typedef void (*can_interrupt_callback_t)(void *can_module);
+
 error_status can_communication_configuration(void);
 void can_gpio_config(void);
 void can_filter_mask_configuration(void);
@@ -14,5 +21,12 @@ void can_diagnose_errors(void);
 void can_interrupts_enable(void);
 void can_interrupts_disable(void);
 void can_cancel_pending_tx(can_type *can_x);
+
+/* Register CANopen interrupt callback */
+void can_register_interrupt_callback(can_interrupt_callback_t callback, void *can_module);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

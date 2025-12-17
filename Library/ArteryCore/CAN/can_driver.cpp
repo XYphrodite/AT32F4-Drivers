@@ -1,4 +1,5 @@
 #include "can_driver.h"
+#include <stddef.h>
 
 error_status can_communication_configuration(void)
 {
@@ -55,6 +56,7 @@ error_status can_communication_configuration(void)
 static void can_configure_interrupts(confirm_state state)
 {
   can_interrupt_enable(CAN1, CAN_RF0MIEN_INT, state);  /* RX FIFO0 message */
+  can_interrupt_enable(CAN1, CAN_TCIEN_INT, state);    /* TX mailbox completion */
   can_interrupt_enable(CAN1, CAN_ETRIEN_INT, state);   /* Error type record */
   can_interrupt_enable(CAN1, CAN_EOIEN_INT, state);    /* Error occurrence */
 }
@@ -221,42 +223,76 @@ volatile uint8_t rx_data[8];
 volatile uint8_t rx_length = 0;
 volatile uint32_t rx_id = 0;
 
+/* CANopen interrupt callback registration */
+static can_interrupt_callback_t g_can_interrupt_callback = NULL;
+static void *g_can_module_ptr = NULL;
+
+/**
+ * @brief Register a callback function for CAN interrupt handling
+ * @param callback Function pointer to the interrupt handler (e.g., CO_CANinterrupt)
+ * @param can_module Pointer to the CAN module structure (e.g., CO_CANmodule_t *)
+ * @note If callback is registered, the ISRs will call it instead of default handling
+ */
+void can_register_interrupt_callback(can_interrupt_callback_t callback, void *can_module)
+{
+    g_can_interrupt_callback = callback;
+    g_can_module_ptr = can_module;
+}
+
 void CAN1_RX0_IRQHandler(void)
 {
-    can_rx_message_type rx_message;
-
-    /* Check if message is available in FIFO0 */
-    if (can_receive_message_num_get(CAN1, CAN_RX_FIFO0) > 0)
+    /* If CANopen callback is registered, use it */
+    if (g_can_interrupt_callback != NULL && g_can_module_ptr != NULL)
     {
-        /* Receive the message */
-        can_message_receive(CAN1, CAN_RX_FIFO0, &rx_message);
-        
-        /* Store received data */
-        rx_id = (rx_message.id_type == CAN_ID_STANDARD) ? 
-                rx_message.standard_id : rx_message.extended_id;
-        rx_length = rx_message.dlc;
-        
-        for (uint8_t i = 0; i < rx_message.dlc; i++)
+        g_can_interrupt_callback(g_can_module_ptr);
+    }
+    else
+    {
+        /* Default handling: store received data in global variables */
+        can_rx_message_type rx_message;
+
+        /* Check if message is available in FIFO0 */
+        if (can_receive_message_num_get(CAN1, CAN_RX_FIFO0) > 0)
         {
-            rx_data[i] = rx_message.data[i];
+            /* Receive the message */
+            can_message_receive(CAN1, CAN_RX_FIFO0, &rx_message);
+            
+            /* Store received data */
+            rx_id = (rx_message.id_type == CAN_ID_STANDARD) ? 
+                    rx_message.standard_id : rx_message.extended_id;
+            rx_length = rx_message.dlc;
+            
+            for (uint8_t i = 0; i < rx_message.dlc; i++)
+            {
+                rx_data[i] = rx_message.data[i];
+            }
+            
+            /* Release FIFO entry */
+            can_receive_release_fifo(CAN1, CAN_RX_FIFO0);
         }
-        
-        /* Release FIFO entry */
-        can_receive_release_fifo(CAN1, CAN_RX_FIFO0);
     }
 }
 
 void CAN1_SE_IRQHandler(void)
 {
-    can_error_record_type error_type;
-    uint8_t tx_err_cnt, rx_err_cnt;
-
-    /* Check for errors */
-    if (can_interrupt_flag_get(CAN1, CAN_EOIEN_INT) == SET)
+    /* If CANopen callback is registered, use it */
+    if (g_can_interrupt_callback != NULL && g_can_module_ptr != NULL)
     {
-        error_type = can_error_type_record_get(CAN1);
-        tx_err_cnt = can_transmit_error_counter_get(CAN1);
-        rx_err_cnt = can_receive_error_counter_get(CAN1);
+        g_can_interrupt_callback(g_can_module_ptr);
+    }
+    else
+    {
+        /* Default handling: read error counters */
+        can_error_record_type error_type;
+        uint8_t tx_err_cnt, rx_err_cnt;
+
+        /* Check for errors */
+        if (can_interrupt_flag_get(CAN1, CAN_EOIEN_INT) == SET)
+        {
+            error_type = can_error_type_record_get(CAN1);
+            tx_err_cnt = can_transmit_error_counter_get(CAN1);
+            rx_err_cnt = can_receive_error_counter_get(CAN1);
+        }
     }
 }
 
