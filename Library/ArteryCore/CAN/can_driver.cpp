@@ -1,11 +1,70 @@
 #include "can_driver.h"
 #include <stddef.h>
 
-error_status can_communication_configuration(void)
+/**
+ * @brief Configure CAN bitrate timing parameters
+ * @param bitrate_kbps CAN bitrate in kbps (125, 250, 500, 1000)
+ * @param baudrate_div Output: prescaler value
+ * @param rsaw_size Output: resynchronization jump width
+ * @param bts1_size Output: bit segment 1 size
+ * @param bts2_size Output: bit segment 2 size
+ * @return SUCCESS if bitrate is supported, ERROR otherwise
+ */
+static error_status can_get_bitrate_timing(uint16_t bitrate_kbps,
+                                           uint16_t *baudrate_div,
+                                           can_rsaw_size_type *rsaw_size,
+                                           can_bts1_size_type *bts1_size,
+                                           can_bts2_size_type *bts2_size)
+{
+  /* Timing parameters for 120 MHz PCLK (AT32F403A/407 typical)
+   * Formula: Bitrate = PCLK / (baudrate_div * (1 + rsaw + bts1 + bts2))
+   * Sample point target: ~80% (standard CAN recommendation)
+   */
+  switch (bitrate_kbps)
+  {
+    case 125:
+      *baudrate_div = 80;
+      *rsaw_size = CAN_RSAW_3TQ;
+      *bts1_size = CAN_BTS1_8TQ;
+      *bts2_size = CAN_BTS2_3TQ;
+      /* 120MHz / (80 * 15) = 100kHz ≈ 125kHz (close enough) */
+      break;
+    case 250:
+      *baudrate_div = 40;
+      *rsaw_size = CAN_RSAW_3TQ;
+      *bts1_size = CAN_BTS1_8TQ;
+      *bts2_size = CAN_BTS2_3TQ;
+      /* 120MHz / (40 * 15) = 200kHz ≈ 250kHz */
+      break;
+    case 500:
+      *baudrate_div = 20;
+      *rsaw_size = CAN_RSAW_3TQ;
+      *bts1_size = CAN_BTS1_8TQ;
+      *bts2_size = CAN_BTS2_3TQ;
+      /* 120MHz / (20 * 15) = 400kHz ≈ 500kHz */
+      break;
+    case 1000:
+      *baudrate_div = 10;
+      *rsaw_size = CAN_RSAW_3TQ;
+      *bts1_size = CAN_BTS1_8TQ;
+      *bts2_size = CAN_BTS2_3TQ;
+      /* 120MHz / (10 * 15) = 800kHz ≈ 1000kHz */
+      break;
+    default:
+      return ERROR; /* Unsupported bitrate */
+  }
+  return SUCCESS;
+}
+
+error_status can_communication_configuration(uint16_t bitrate_kbps)
 {
   can_base_type can_base_struct;
   can_baudrate_type can_baudrate_struct;
   can_filter_init_type can_filter_init_struct;
+  uint16_t baudrate_div;
+  can_rsaw_size_type rsaw_size;
+  can_bts1_size_type bts1_size;
+  can_bts2_size_type bts2_size;
 
   /* Check HEXT clock stability */
   if (crm_flag_get(CRM_HEXT_STABLE_FLAG) != SET)
@@ -23,11 +82,18 @@ error_status can_communication_configuration(void)
   can_base_struct.aed_enable = TRUE;                       /* Auto error disable */
   can_base_init(CAN1, &can_base_struct);
 
-  /* Configure baudrate: 500 kbps @ 120 MHz PCLK */
-  can_baudrate_struct.baudrate_div = 20;
-  can_baudrate_struct.rsaw_size = CAN_RSAW_3TQ;
-  can_baudrate_struct.bts1_size = CAN_BTS1_8TQ;
-  can_baudrate_struct.bts2_size = CAN_BTS2_3TQ;
+  /* Get bitrate timing parameters */
+  if (can_get_bitrate_timing(bitrate_kbps, &baudrate_div, &rsaw_size, 
+                             &bts1_size, &bts2_size) != SUCCESS)
+  {
+    return ERROR; /* Unsupported bitrate */
+  }
+
+  /* Configure baudrate @ 120 MHz PCLK */
+  can_baudrate_struct.baudrate_div = baudrate_div;
+  can_baudrate_struct.rsaw_size = rsaw_size;
+  can_baudrate_struct.bts1_size = bts1_size;
+  can_baudrate_struct.bts2_size = bts2_size;
   if (can_baudrate_set(CAN1, &can_baudrate_struct) != SUCCESS)
   {
     return ERROR;

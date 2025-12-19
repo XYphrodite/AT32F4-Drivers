@@ -8,7 +8,7 @@
 
 class CanApi{
     public:
-    void Init(void);
+    void Init(uint16_t bitrate_kbps = 500); /* Default 500 kbps, can be overridden */
     void TransmitMessage(uint32_t id, uint8_t *data, uint8_t length);
     void ReceiveMessage(uint32_t *id, uint8_t *data, uint8_t *length);
     void DiagnoseErrors(void);

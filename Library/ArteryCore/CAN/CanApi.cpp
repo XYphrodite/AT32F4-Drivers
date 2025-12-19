@@ -2,11 +2,11 @@
 #include "can_driver.h"
 
 
-void CanApi::Init(void){
+void CanApi::Init(uint16_t bitrate_kbps){
     can_gpio_config();
     can_filter_mask_configuration();
     can_filter_list_configuration();
-    can_communication_configuration();
+    can_communication_configuration(bitrate_kbps);
 }
 
 void CanApi::TransmitMessage(uint32_t id, uint8_t *data, uint8_t length){

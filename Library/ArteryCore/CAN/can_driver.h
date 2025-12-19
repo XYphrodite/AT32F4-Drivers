@@ -10,7 +10,7 @@ extern "C" {
 /* Callback function pointer type for CAN interrupt handling */
 typedef void (*can_interrupt_callback_t)(void *can_module);
 
-error_status can_communication_configuration(void);
+error_status can_communication_configuration(uint16_t bitrate_kbps);
 void can_gpio_config(void);
 void can_filter_mask_configuration(void);
 void can_filter_list_configuration(void);
