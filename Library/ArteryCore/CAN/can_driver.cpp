@@ -1,4 +1,5 @@
 #include "can_driver.h"
+#include <cstdint>
 #include <stddef.h>
 
 /**
@@ -12,9 +13,9 @@
  */
 static error_status can_get_bitrate_timing(uint16_t bitrate_kbps,
                                            uint16_t *baudrate_div,
-                                           can_rsaw_size_type *rsaw_size,
-                                           can_bts1_size_type *bts1_size,
-                                           can_bts2_size_type *bts2_size)
+                                           can_rsaw_type *rsaw_size,
+                                           can_bts1_type *bts1_size,
+                                           can_bts2_type *bts2_size)
 {
   /* Timing parameters for 120 MHz PCLK (AT32F403A/407 @ 240MHz, APB1 = 120MHz)
    * Formula: Bitrate = PCLK / (baudrate_div * (1 + BTS1 + BTS2))
@@ -63,9 +64,9 @@ error_status can_communication_configuration(uint16_t bitrate_kbps)
   can_baudrate_type can_baudrate_struct;
   can_filter_init_type can_filter_init_struct;
   uint16_t baudrate_div;
-  can_rsaw_size_type rsaw_size;
-  can_bts1_size_type bts1_size;
-  can_bts2_size_type bts2_size;
+  can_rsaw_type rsaw_size;
+  can_bts1_type bts1_size;
+  can_bts2_type bts2_size;
 
   /* Check HEXT clock stability */
   if (crm_flag_get(CRM_HEXT_STABLE_FLAG) != SET)
@@ -270,7 +271,7 @@ error_status can_receive_message(can_rx_message_type *rx_message)
     uint32_t pending_count;
 
     /* Check if messages are pending in FIFO0 */
-    pending_count = can_receive_message_num_get(CAN1, CAN_RX_FIFO0);
+    pending_count = can_receive_message_pending_get(CAN1, CAN_RX_FIFO0);
     
     if (pending_count == 0)
     {
@@ -281,7 +282,7 @@ error_status can_receive_message(can_rx_message_type *rx_message)
     can_message_receive(CAN1, CAN_RX_FIFO0, rx_message);
     
     /* Release the FIFO entry */
-    can_receive_release_fifo(CAN1, CAN_RX_FIFO0);
+    can_receive_fifo_release(CAN1, CAN_RX_FIFO0);
 
     return SUCCESS;
 }
@@ -319,7 +320,7 @@ void CAN1_RX0_IRQHandler(void)
         can_rx_message_type rx_message;
 
         /* Check if message is available in FIFO0 */
-        if (can_receive_message_num_get(CAN1, CAN_RX_FIFO0) > 0)
+        if (can_receive_message_pending_get(CAN1, CAN_RX_FIFO0) > 0)
         {
             /* Receive the message */
             can_message_receive(CAN1, CAN_RX_FIFO0, &rx_message);
@@ -335,7 +336,7 @@ void CAN1_RX0_IRQHandler(void)
             }
             
             /* Release FIFO entry */
-            can_receive_release_fifo(CAN1, CAN_RX_FIFO0);
+            can_receive_fifo_release(CAN1, CAN_RX_FIFO0);
         }
     }
 }
@@ -379,11 +380,11 @@ void can_diagnose_errors(void)
 
 void can_cancel_pending_tx(can_type *can_x)
 {
-  for (can_tx_mailbox_num_type mb = CAN_TX_MAILBOX0; mb <= CAN_TX_MAILBOX2; mb++)
+  for (uint8_t mb = static_cast<uint8_t>(CAN_TX_MAILBOX0); mb <= static_cast<uint8_t>(CAN_TX_MAILBOX2); mb++)
   {
-    if (can_transmit_status_get(can_x, mb) == CAN_TX_STATUS_PENDING)
+    if (can_transmit_status_get(can_x, static_cast<can_tx_mailbox_num_type>(mb)) == CAN_TX_STATUS_PENDING)
     {
-      can_transmit_cancel(can_x, mb);
+      can_transmit_cancel(can_x, static_cast<can_tx_mailbox_num_type>(mb));
     }
   }
 }
