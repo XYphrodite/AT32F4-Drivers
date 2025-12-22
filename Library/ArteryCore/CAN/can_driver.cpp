@@ -16,9 +16,10 @@ static error_status can_get_bitrate_timing(uint16_t bitrate_kbps,
                                            can_bts1_size_type *bts1_size,
                                            can_bts2_size_type *bts2_size)
 {
-  /* Timing parameters for 120 MHz PCLK (AT32F403A/407 typical)
-   * Formula: Bitrate = PCLK / (baudrate_div * (1 + rsaw + bts1 + bts2))
-   * Sample point target: ~80% (standard CAN recommendation)
+  /* Timing parameters for 120 MHz PCLK (AT32F403A/407 @ 240MHz, APB1 = 120MHz)
+   * Formula: Bitrate = PCLK / (baudrate_div * (1 + BTS1 + BTS2))
+   * Note: RSAW is for resynchronization, not part of bit time calculation
+   * Bit time = 1 + 8 + 3 = 12 TQ, Sample point at 75% (9/12)
    */
   switch (bitrate_kbps)
   {
@@ -27,28 +28,28 @@ static error_status can_get_bitrate_timing(uint16_t bitrate_kbps,
       *rsaw_size = CAN_RSAW_3TQ;
       *bts1_size = CAN_BTS1_8TQ;
       *bts2_size = CAN_BTS2_3TQ;
-      /* 120MHz / (80 * 15) = 100kHz ≈ 125kHz (close enough) */
+      /* 120MHz / (80 * 12) = 125kHz - SKOV default bitrate */
       break;
     case 250:
       *baudrate_div = 40;
       *rsaw_size = CAN_RSAW_3TQ;
       *bts1_size = CAN_BTS1_8TQ;
       *bts2_size = CAN_BTS2_3TQ;
-      /* 120MHz / (40 * 15) = 200kHz ≈ 250kHz */
+      /* 120MHz / (40 * 12) = 250kHz */
       break;
     case 500:
       *baudrate_div = 20;
       *rsaw_size = CAN_RSAW_3TQ;
       *bts1_size = CAN_BTS1_8TQ;
       *bts2_size = CAN_BTS2_3TQ;
-      /* 120MHz / (20 * 15) = 400kHz ≈ 500kHz */
+      /* 120MHz / (20 * 12) = 500kHz */
       break;
     case 1000:
       *baudrate_div = 10;
       *rsaw_size = CAN_RSAW_3TQ;
       *bts1_size = CAN_BTS1_8TQ;
       *bts2_size = CAN_BTS2_3TQ;
-      /* 120MHz / (10 * 15) = 800kHz ≈ 1000kHz */
+      /* 120MHz / (10 * 12) = 1000kHz */
       break;
     default:
       return ERROR; /* Unsupported bitrate */
