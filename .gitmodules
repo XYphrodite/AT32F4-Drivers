@@ -13,3 +13,6 @@
 [submodule "at32f435-437-docs"]
 	path = at32f435-437-docs
 	url = https://github.com/XYphrodite/at32f435-437-docs.git
+[submodule "Library/externals/lvgl"]
+	path = Library/externals/lvgl
+	url = https://github.com/lvgl/lvgl
