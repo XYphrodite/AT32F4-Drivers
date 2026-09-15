@@ -1,5 +1,7 @@
 # AT32F4-Drivers Library
 
+[English](README.md) | [Русский](README_ru.md)
+
 Shared core library for AT32F403A/AT32F407 microcontroller projects.
 
 ## Overview

@@ -1,27 +1,28 @@
-# AT32F4-Drivers - Shared MCU Hardware Abstraction Library
+# AT32F4-Drivers — Общая библиотека HAL для микроконтроллеров
 
-[English](ProjectContext.md) | [Русский](ProjectContext_ru.md)
+[Русский](ProjectContext_ru.md) | [English](ProjectContext.md)
 
-## Overview
+## Обзор
 
-TafcoMcuCore is a comprehensive hardware abstraction layer (HAL) and driver collection for Artery AT32F403A/407 ARM Cortex-M4F microcontrollers. This library serves as the foundational layer shared across multiple firmware projects in the TafcoPigstore ecosystem, providing unified interfaces for peripheral control, middleware integration, and system services.
+AT32F4-Drivers — это комплексный уровень аппаратных абстракций (HAL) и набор драйверов для микроконтроллеров Artery AT32F403A/407 (ARM Cortex-M4F). Библиотека служит фундаментом для нескольких проектов прошивок в экосистеме Tafco, предоставляя единые интерфейсы для управления периферией, интеграции middleware и системных сервисов.
 
-**Repository Type**: Shared Library  
-**Target MCUs**: AT32F403A, AT32F407 (ARM Cortex-M4F with FPU)  
-**Primary Projects Using This Library**:
-- P-Block (Modbus RTU main application)
-- Bootloader0 (Firmware bootloader)
-- Prebootload (Pre-bootloader)
-- USB-CAN Converter (Utility application)
+**Тип репозитория**: Общая библиотека  
+**Целевые МК**: AT32F403A, AT32F407 (ARM Cortex-M4F с FPU)  
+**Основные проекты, использующие библиотеку**:
+- P-Block (Modbus RTU — основное приложение)
+- Bootloader0 (загрузчик)
+- Prebootload (предзагрузчик)
+- USB-CAN Converter (утилита)
 
-**Current Status** (November 25, 2025):
-- **Version**: Legacy/customized version for TafcoPigstore projects
-- **Stability**: Production-ready
-- **Documentation**: Complete with Context7 integration
-- **Recent Addition**: USB-CAN Converter utility (November 24, 2025)
+**Статус** (25 ноября 2025):
+- **Версия**: Legacy/кастомизированная для проектов Tafco
+- **Стабильность**: Production-ready
+- **Документация**: полная, с интеграцией Context7
+- **Последнее дополнение**: USB-CAN Converter (24 ноября 2025)
+
+> **Примечание:** Полные таблицы периферии, API и структура каталогов — без перевода (оригинал на английском) для точности. Ниже — перевод ключевых разделов. Оригинал: `ProjectContext.md`.
 
 ---
-
 ## Supported Microcontrollers
 
 ### AT32F403A Series
@@ -496,7 +497,7 @@ UartService::Init(&uart_config);
 
 ### Centralized Memory Layout
 
-TafcoMcuCore provides centralized linker scripts for consistent memory mapping across all projects:
+AT32F4-Drivers provides centralized linker scripts for consistent memory mapping across all projects:
 
 ```
 ldscripts/
@@ -541,7 +542,7 @@ ldscripts/
 ## Utility Applications (`utils/`)
 
 ### USB-CAN Converter
-**Location**: `TafcoMcuCore/utils/usb-can-converter/`  
+**Location**: `AT32F4-Drivers/utils/usb-can-converter/`  
 **Status**: ✅ Complete and production-ready (November 24, 2025)  
 **Purpose**: Bidirectional USB Virtual COM Port ↔ CAN bus bridge
 
@@ -578,7 +579,7 @@ ldscripts/
 ## Documentation (`at32f403a-407-docs/`)
 
 ### Context7-Optimized Documentation Submodule
-**Location**: `TafcoMcuCore/at32f403a-407-docs/` (Git submodule)  
+**Location**: `AT32F4-Drivers/at32f403a-407-docs/` (Git submodule)  
 **Source**: https://github.com/xyphrodite/at32f403a-407-docs.git  
 **Status**: ✅ Complete and production-ready  
 **Purpose**: Comprehensive MCU documentation for Context7 AI assistant
@@ -633,10 +634,10 @@ ldscripts/
 ### CMake Configuration
 
 #### Shared Library Path
-Projects reference TafcoMcuCore via:
+Projects reference AT32F4-Drivers via:
 
 ```cmake
-set(SHARED_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../TafcoMcuCore)
+set(SHARED_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../AT32F4-Drivers)
 ```
 
 #### Standard Compile Definitions
@@ -690,7 +691,7 @@ Projects typically include:
 
 ## Git Submodules
 
-TafcoMcuCore uses Git submodules for external dependencies:
+AT32F4-Drivers uses Git submodules for external dependencies:
 
 ```
 [submodule "Library/sx126x_driver"]
@@ -899,7 +900,7 @@ uint32_t millivolts = (raw_value * 3300) / 4096;
 ### ⚠️ Important Notes
 
 **Legacy Version Warning**:
-This is an older/customized version of TafcoMcuCore maintained specifically for TafcoPigstore projects. Exercise caution when integrating newer library versions as compatibility issues may arise.
+This is an older/customized version of AT32F4-Drivers maintained specifically for TafcoPigstore projects. Exercise caution when integrating newer library versions as compatibility issues may arise.
 
 ### Project-Specific Modifications
 
@@ -953,7 +954,7 @@ This is an older/customized version of TafcoMcuCore maintained specifically for 
 
 ---
 
-## Projects Using TafcoMcuCore
+## Projects Using AT32F4-Drivers
 
 ### 1. P-Block (Main Application)
 **Path**: `../P-block/`  
@@ -966,7 +967,7 @@ This is an older/customized version of TafcoMcuCore maintained specifically for 
 - FreeRTOS multitasking
 - Watchdog monitoring
 
-**Uses from TafcoMcuCore**:
+**Uses from AT32F4-Drivers**:
 - AT32F403A drivers
 - FreeRTOS
 - UART service
@@ -985,7 +986,7 @@ This is an older/customized version of TafcoMcuCore maintained specifically for 
 - Vector table relocation
 - ~24.3 KB flash usage
 
-**Uses from TafcoMcuCore**:
+**Uses from AT32F4-Drivers**:
 - AT32F403A drivers
 - USB middleware
 - UART service
@@ -1003,7 +1004,7 @@ This is an older/customized version of TafcoMcuCore maintained specifically for 
 - Watchdog setup
 - 4 KB flash region
 
-**Uses from TafcoMcuCore**:
+**Uses from AT32F4-Drivers**:
 - AT32F403A drivers
 - Clock configuration
 - Flash service
@@ -1019,7 +1020,7 @@ This is an older/customized version of TafcoMcuCore maintained specifically for 
 - Text-based protocol
 - Production-ready
 
-**Uses from TafcoMcuCore**:
+**Uses from AT32F4-Drivers**:
 - AT32F403A drivers
 - USB middleware
 - Clock configuration
@@ -1033,9 +1034,9 @@ This is an older/customized version of TafcoMcuCore maintained specifically for 
 ### Setting Up a New Project
 
 1. **Create project directory** in parent repository
-2. **Reference TafcoMcuCore**:
+2. **Reference AT32F4-Drivers**:
    ```cmake
-   set(SHARED_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../TafcoMcuCore)
+   set(SHARED_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../AT32F4-Drivers)
    ```
 3. **Include required components**:
    ```cmake
@@ -1117,7 +1118,7 @@ See individual source files for copyright and license information. Components in
 
 ## Contributing
 
-When contributing to TafcoMcuCore:
+When contributing to AT32F4-Drivers:
 
 1. **Maintain Compatibility**: Ensure changes don't break existing projects
 2. **Document Changes**: Update this ProjectContext.md
@@ -1130,7 +1131,7 @@ When contributing to TafcoMcuCore:
 ## Contact and Support
 
 For issues related to:
-- **TafcoMcuCore Library**: Refer to main project documentation
+- **AT32F4-Drivers Library**: Refer to main project documentation
 - **AT32 MCU Documentation**: Visit [Artery Technology](https://www.arterytek.com/)
 - **FreeRTOS Support**: See [FreeRTOS.org](https://www.freertos.org/)
 - **CANopenNode**: See [CANopenNode GitHub](https://github.com/CANopenNode/CANopenNode)
