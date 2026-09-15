@@ -1,10 +1,10 @@
-# TafcoMcuCore Library
+# AT32F4-Drivers Library
 
 Shared core library for AT32F403A/AT32F407 microcontroller projects.
 
 ## Overview
 
-TafcoMcuCore is a hardware abstraction layer (HAL) and driver collection that provides a unified interface for AT32 microcontroller peripherals. This library is shared across multiple firmware projects in this repository.
+AT32F4-Drivers is a hardware abstraction layer (HAL) and driver collection that provides a unified interface for AT32 microcontroller peripherals. This library is shared across multiple firmware projects in this repository.
 
 ## Supported Microcontrollers
 
@@ -87,10 +87,10 @@ Both MCUs are based on ARM Cortex-M4F core with FPU support.
 
 ### CMake Configuration
 
-Each firmware project includes TafcoMcuCore via:
+Each firmware project includes AT32F4-Drivers via:
 
 ```cmake
-set(SHARED_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../TafcoMcuCore)
+set(SHARED_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../AT32F4-Drivers)
 ```
 
 ### Compile Definitions
@@ -144,7 +144,7 @@ xTaskCreate(myTask, "myTask", 256, NULL, tskIDLE_PRIORITY + 1, NULL);
 ## Important Notes
 
 ⚠️ **Legacy Version Warning:**  
-This is an older/customized version of TafcoMcuCore maintained specifically for this project. Exercise caution when integrating newer library versions as compatibility issues may arise.
+This is an older/customized version of AT32F4-Drivers maintained specifically for this project. Exercise caution when integrating newer library versions as compatibility issues may arise.
 
 ### Known Modifications
 - **UnitControlWave** is disabled in LBS (LoRaWAN Basic Stack)
