@@ -1,8 +1,15 @@
-# AT32F4-Drivers Library
+# AT32F4-Drivers — HAL и драйверы для AT32F403A / AT32F407 (Cortex-M4F) | STM32-совместимо
 
-[English](README.md) | **Русский**
+[![Лицензия: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Язык: C/C++](https://img.shields.io/badge/language-C%2FC++-blue.svg)](AT32F403A/drivers/inc/)
+[![МК: AT32F403A/407](https://img.shields.io/badge/MCU-AT32F403A%20%7C%20AT32F407-green.svg)](#поддерживаемые-микроконтроллеры)
+[![Context7: at32f403a-407-docs](https://img.shields.io/badge/Context7-at32f403a--407--docs-blueviolet.svg)](https://context7.com/xyphrodite/at32f403a-407-docs)
 
-Общая библиотека ядра для проектов на микроконтроллерах AT32F403A/AT32F407.
+[English](README.md) | **Русский** | [Docs: Старт](Docs/Getting_Started_ru.md) | [Context7 Docs](https://context7.com/xyphrodite/at32f403a-407-docs)
+
+**Промышленный HAL и драйверы для ArteryTek AT32F403A / AT32F407 (ARM Cortex-M4F)** — GPIO, USART, SPI, I2C, ADC, DMA, TMR, CRM, Flash, FreeRTOS, USB FS, Segger RTT, LoRa SX126x/LLCC68. STM32-совместимо, CMSIS, CMake, ARM GCC. Двуязычно EN/RU.
+
+> **Ключевые слова:** `at32`, `at32f403a`, `at32f407`, `arterytek`, `cortex-m4`, `stm32 совместимо`, `hal`, `cmsis`, `встраиваемые системы`, `микроконтроллер`, `arm gcc`, `freertos`, `lora`, `sx126x`
 
 ## Обзор
 
@@ -183,6 +190,15 @@ xTaskCreate(myTask, "myTask", 256, NULL, tskIDLE_PRIORITY + 1, NULL);
 - Segger RTT: лицензия Segger Microcontroller
 - USB middleware: различные лицензии
 
+## Context7 / LLM
+
+Индексировано для ИИ: `llms.txt` в корне, библиотека `/xyphrodite/at32f403a-407-docs` (1 985 примеров + errata).
+
 ---
 
 За деталями по интеграции смотри документацию основного проекта в родительской директории.
+
+<!--
+GitHub поиск: at32 at32f403a at32f407 arterytek cortex-m4 stm32 hal cmsis встраиваемые микроконтроллер
+Context7: /xyphrodite/at32f403a-407-docs
+-->
